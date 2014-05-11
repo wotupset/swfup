@@ -1,12 +1,5 @@
 <?php
-error_reporting(E_ALL & ~E_NOTICE); //所有錯誤中排除NOTICE提示
-date_default_timezone_set("Asia/Taipei");//時區設定 Etc/GMT+8
-$time=time();
-$dir_mth="./_".date("ym",$time)."/"; //存放該月檔案
-@mkdir($dir_mth, 0777); //建立資料夾 權限0777
-@chmod($dir_mth, 0777); //權限0777
-
-//
+////
 	// Work-around for setting up a session because Flash Player doesn't send the cookies
 	if (isset($_POST["PHPSESSID"])) {
 		session_id($_POST["PHPSESSID"]);
@@ -17,29 +10,16 @@ $dir_mth="./_".date("ym",$time)."/"; //存放該月檔案
 
 	if (!isset($_FILES["Filedata"]) || !is_uploaded_file($_FILES["Filedata"]["tmp_name"]) || $_FILES["Filedata"]["error"] != 0) {
 		echo "There was a problem with the upload";
-		exit;
+		exit(0);
 	}
-/*
-	//檢查是否有安全模式
-
-	$time=time();
-	$dir_mth="./_".date("ym",$time)."/"; //存放該月檔案
-	if(!is_dir($dir_mth)){//子資料夾不存在
-		$FFF=mkdir($dir_mth, 0777); //建立資料夾 權限0777
-	}
-	if($FFF === true){//資料夾建立成功
-		if(!is_file($dir_mth."index.php")){//子資料夾下沒有index.php
-			$FFF=copy("index.php",$dir_mth."index.php");//
-		}
-	}
-	if($FFF === true){//資料夾建立成功
-		rename("./safemode/", "./safemode=no/"); //更名
-	}else{//false
-		rename("./safemode/", "./safemode=YES/"); //更名
-		$dir_mth="./safemode=YES/";
-	}
-	//檢查是否有安全模式/
-*/
+////
+error_reporting(E_ALL & ~E_NOTICE); //所有錯誤中排除NOTICE提示
+date_default_timezone_set("Asia/Taipei");//時區設定 Etc/GMT+8
+$time=time();
+$dir_mth="./_".date("ym",$time)."/"; //存放該月檔案
+@mkdir($dir_mth, 0777); //建立資料夾 權限0777
+@chmod($dir_mth, 0777); //權限0777
+////
 $chk_safemode_= NULL;
 if(is_dir("./safemode=NO/") || is_dir("./safemode=YES/") ){//檢查是否有檢查過
 	if(is_dir("./safemode=NO/")){$chk_safemode_=0;}

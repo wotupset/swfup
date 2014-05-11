@@ -73,9 +73,10 @@ if($qs2>$pg_max){
 	$qs2=$pg_max;
 }
 if($arr_ct%10 != 0){$pg_max=$pg_max+1;}
-$cc=1;$pg_html='';
+$cc=1;$pg_html='';$FFF='';
 for($i=0;$i<$pg_max;$i++){
-	$pg_html.="<a href='".$phpself."?".$ym."!".$i."'>".$cc."</a>";
+	if($i == $qs2){$FFF="&nbsp;&#9619;&#9618;&#9617;";}else{$FFF='';}
+	$pg_html.="<a href='".$phpself."?".$ym."!".$i."'>".$i."</a>".$FFF;
 	$pg_html.="<br/>\n";
 	$cc=$cc+1;
 
@@ -86,9 +87,16 @@ $cc=1;$pic='';
 foreach($FFF_arr as $k => $v ){
 	//if(){continue;}
 	if( ($cc> ($qs2)*10 ) && ($cc< ($qs2+1)*10 ) ){
+		//$pic_src=$phpdir.$dir_mth.$v;
+		$pic_src=$dir_mth.$v;
+		//$pic_size=filesize($pic_src);
+		$fn=$v;
+		$fn_a=substr($fn,0,strrpos($fn,".")); //主檔名
+		$fn_b=strrpos($fn,".")+1-strlen($fn);
+		$fn_b=substr($fn,$fn_b); //副檔名
 		$pic.= $cc;
+		if(strtolower($fn_b) == "gif"){$pic.="GIF";}
 		$pic.= "<br/>\n";
-		$pic_src=$phpdir.$dir_mth.$v;
 		$pic.= "<a href='".$pic_src."' target='_blank'><img src='".$pic_src."'/></a>";
 		$pic.= "<br/>\n";
 	}
@@ -122,6 +130,7 @@ $x=<<<EOT
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META http-equiv="Content-Script-Type" content="text/javascript">
 <META http-equiv="Content-Style-Type" content="text/css">
+<META HTTP-EQUIV="EXPIRES" CONTENT="Thu, 15 Jan 2009 05:12:01 GMT">
 <META NAME="ROBOTS" CONTENT="INDEX,FOLLOW">
 <STYLE TYPE="text/css">
 body2 { font-family:"細明體",'MingLiU'; }
