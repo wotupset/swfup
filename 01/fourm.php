@@ -1,0 +1,38 @@
+<?php
+date_default_timezone_set("Asia/Taipei");//時區設定 Etc/GMT+8
+$time=time();
+$dir_mth="./_".date("ym",$time)."/"; //存放該月檔案
+$phplink="http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."";
+$phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
+$phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
+//**********
+$url=$dir_mth;
+$handle=opendir($url); 
+$cc = 0;
+$FFF_arr=array();
+while(($file = readdir($handle))!==false) { 
+	$chk=0;
+	if(preg_match("/\.jpg$/i",$file)){$chk=1;}
+	if(preg_match("/\.png$/i",$file)){$chk=1;}
+	if(preg_match("/\.gif$/i",$file)){$chk=1;}
+	if($chk==1){$FFF_arr[]=$file;}
+	$cc = $cc + 1;
+} 
+closedir($handle); 
+//**********
+rsort($FFF_arr);
+//echo "<pre>".print_r($FFF_arr,true)."</pre>";
+echo "<pre>";
+$cc=0;
+foreach($FFF_arr as $k => $v ){
+	if($cc>100){break;}
+	echo $k;
+	echo "\n";
+	echo "[img]".$phpdir.$dir_mth.$v."[/img]";
+	echo "\n";
+	$cc=$cc+1;
+
+}
+echo "</pre>";
+
+?>
