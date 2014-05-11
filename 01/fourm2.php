@@ -86,7 +86,7 @@ for($i=0;$i<$pg_max;$i++){
 $cc=1;$pic='';
 foreach($FFF_arr as $k => $v ){
 	//if(){continue;}
-	if( ($cc> ($qs2)*10 ) && ($cc< ($qs2+1)*10 ) ){
+	if( ($cc> ($qs2)*10 ) && ($cc<= ($qs2+1)*10 ) ){
 		//$pic_src=$phpdir.$dir_mth.$v;
 		$pic_src=$dir_mth.$v;
 		//$pic_size=filesize($pic_src);
