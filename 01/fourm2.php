@@ -14,8 +14,16 @@ if(preg_match("/^([0-9]{4})!([0-9]+)$/",$query_string,$match)){
 	$qs1=$match[1];
 	$qs2=$match[2];
 	$ym=$qs1;//有指定的話 更換資料夾
+}else{
+	if(preg_match("/^([0-9]{4})$/",$query_string,$match)){
+		$qs1=$match[1];
+		$ym=$qs1;//有指定的話 更換資料夾
+	}
 }
 unset($match);
+if(!$qs1){$qs1=$ym;}
+if(!$qs2){$qs2=0;}
+
 //**********
 $dir_mth="./_".$ym."/"; //存放該月檔案
 $url=$dir_mth;
