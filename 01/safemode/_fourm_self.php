@@ -73,7 +73,7 @@ $htmlbody=<<<EOT
 </div>
 <div id="menu3" style="z-index:8;position: fixed; margin-bottom: 0px; padding: 5px; width: 100%; left: 0px; bottom: 0px; color: #cc0000; background-color: #ffffee; border-top: 1px black solid; ">
 	<div style="font-size: 12px;margin-bottom:5px;">
-		年月 $ym 分頁 $qs2 <br/>
+		年月 $ym 分頁 $pg_n <br/>
 	</div>
 </div>
 <div id="right_content" style="margin: auto auto 50px 160px;">
