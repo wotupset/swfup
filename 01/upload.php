@@ -26,7 +26,14 @@ if(is_dir("./safemode=NO/") || is_dir("./safemode=YES/") ){//檢查是否有檢�
 	if(is_dir("./safemode=YES/")){$chk_safemode_=1;}
 	//echo "跳過";
 }else{//沒檢查過
-	@copy("index.php", $dir_mth."index.php");//複製index檔案到目錄
+	$FFF="index.php";
+	if(!is_file($dir_mth.$FFF)){
+		@copy($FFF, $dir_mth.$FFF);//複製index檔案到目錄
+	}
+	$FFF="_fourm_self.php";
+	if(!is_file($dir_mth.$FFF)){
+		@copy($FFF, $dir_mth.$FFF);//複製index檔案到目錄
+	}
 	if(is_file($dir_mth."index.php")){//存在
 		@rename("./safemode/", "./safemode=NO/"); //更名
 		$chk_safemode_=0;//沒有安全模式

@@ -8,31 +8,18 @@ $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 $phpself=basename($_SERVER["SCRIPT_FILENAME"]);//被執行的文件檔名
 //**********
-if(preg_match("/^([0-9]{4})!([0-9]+)$/",$query_string,$match)){
-	//$match[1]=ym
-	//$match[2]=pg
-	$qs1=$match[1];
-	$qs2=$match[2];
-	$ym=$qs1;//有指定的話 更換資料夾
-}else{
-	if(preg_match("/^([0-9]{4})$/",$query_string,$match)){
-		$qs1=$match[1];
-		$ym=$qs1;//有指定的話 更換資料夾
-	}
+if(preg_match("/^([0-9]+)!$/",$query_string,$match)){
+	$pg_n=$match[1];//分頁的頁數
 }
 unset($match);
-if(!$qs1){$qs1=$ym;}
-if(!$qs2){$qs2=0;}
+if(!$pg_n){$pg_n=0;}//沒指定就是0
 
 //**********
-$dir_mth="./_".$ym."/"; //存放該月檔案
-if(!is_dir($dir_mth)){die('[x]dir');}
-$dir_mth_index=$dir_mth."index.php"; //存放該月檔案
-if(!is_file($dir_mth_index)){die('[x]index');}
+$dir_mth="./"; //掃描根目錄
 $url=$dir_mth;
 $handle=opendir($url); 
 $cc = 0;
-$FFF_arr=array();$FFF_arr2=array();
+$FFF_arr=array();
 while(($file = readdir($handle))!==false) { 
 	$chk=0;
 	if(preg_match("/\.jpg$/i",$file)){$chk=1;}//只要圖
@@ -42,44 +29,18 @@ while(($file = readdir($handle))!==false) {
 	$cc = $cc + 1;
 } 
 closedir($handle); 
-//**********
-//遍歷資料夾
-$url="./";
-$handle=opendir($url); 
-$cc = 0;
-$FFF_arr2=array();
-while(($file = readdir($handle))!==false) { 
-	$chk=0;
-	if( is_dir($file) && preg_match("/^_([0-9]{4})$/",$file,$match) ){$chk=2;}
-	if($chk==2){$FFF_arr2[]=$match[1];}//列出存圖的資料夾
-	$cc = $cc + 1;
-} 
-closedir($handle); 
-
-//**********
 sort($FFF_arr);//排序 舊的在前
-sort($FFF_arr2);//排序 舊的在前
-//print_r($FFF_arr2);
-//**********
-//列出關聯資料夾
-$list_dir_html='';
-foreach($FFF_arr2 as $k => $v ){
-	$list_dir_html.="<a href='".$phpself."?".$v."!0'>".$v."</a>";
-	$list_dir_html.="\n";
-}
-
 //**********
 //列出左側分頁
-$arr_ct=count($FFF_arr);//計算數量
-$pg_max=floor($arr_ct/10);
-if($qs2>$pg_max){
-	$qs2=$pg_max;
-}
-if($arr_ct%10 != 0){$pg_max=$pg_max+1;}
+$arr_count=count($FFF_arr);//計算數量
+$pg_max=floor($arr_count/10);
+if($arr_count%10 != 0){$pg_max=$pg_max+1;} //有餘數再加一
+if($pg_n>$pg_max){$pg_n=$pg_max;}//指定頁數太大 就更換成max值
+
 $cc=1;$pg_html='';$FFF='';
 for($i=0;$i<$pg_max;$i++){
-	if($i == $qs2){$FFF="&nbsp;<span id='menu2_pi'>&#9619;&#9618;&#9617;</span>";}else{$FFF='';}
-	$pg_html.="<a href='".$phpself."?".$ym."!".$i."'>".$i."</a>".$FFF;
+	if($i == $pg_n){$FFF="&nbsp;<span id='menu2_pi'>&#9619;&#9618;&#9617;</span>";}else{$FFF='';}
+	$pg_html.="<a href='".$phpself."?".$i."!'>".$i."</a>".$FFF;
 	$pg_html.="<br/>\n";
 	$cc=$cc+1;
 
@@ -89,7 +50,7 @@ for($i=0;$i<$pg_max;$i++){
 $cc=1;$pic='';
 foreach($FFF_arr as $k => $v ){
 	//if(){continue;}
-	if( ($k>= ($qs2)*10 ) && ($k< ($qs2+1)*10 ) ){
+	if( ($k>= ($pg_n)*10 ) && ($k< ($pg_n+1)*10 ) ){
 		//$pic_src=$phpdir.$dir_mth.$v;
 		$pic_src=$dir_mth.$v;
 		//$pic_size=filesize($pic_src);
@@ -113,7 +74,6 @@ $htmlbody=<<<EOT
 <div id="menu3" style="z-index:8;position: fixed; margin-bottom: 0px; padding: 5px; width: 100%; left: 0px; bottom: 0px; color: #cc0000; background-color: #ffffee; border-top: 1px black solid; ">
 	<div style="font-size: 12px;margin-bottom:5px;">
 		年月 $ym 分頁 $qs2 <br/>
-		$list_dir_html
 	</div>
 </div>
 <div id="right_content" style="margin: auto auto 50px 160px;">

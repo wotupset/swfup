@@ -88,10 +88,12 @@ tr:hover .span_right {
 visibility:visible;
 }
 .td_left {
+white-space: nowrap; 
 overflow: hidden; 
 width: 80px;
 }
 .td_right{
+white-space: nowrap; 
 overflow: hidden; 
 width: 420px;
 }
