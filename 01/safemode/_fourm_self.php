@@ -131,7 +131,8 @@ $(document).ready(function(){
 ////
 	var tmp1 = $("#menu2").height();//左側選單高度
 	var tmp2 = $("#menu2_pi").position().top - (tmp1/2); //計算左側選單捲軸要停留的位置
-	$("#menu2").animate({scrollTop: tmp2 },1000,"swing");//jq動畫方式移動捲軸
+	//$("#menu2").animate({scrollTop: tmp2 },1000,"swing");//jq動畫方式移動捲軸
+	$("#menu2").scrollTop(tmp2);
 });
 </script>
 </head>
