@@ -49,7 +49,7 @@ $FFF_arr2=array();
 while(($file = readdir($handle))!==false) { 
 	$chk=0;
 	if( is_dir($file) && preg_match("/^_([0-9]{4})$/",$file,$match) ){$chk=2;}
-	if($chk==2){$FFF_arr2[]=$match[1];}
+	if($chk==2){$FFF_arr2[]=$match[1];}//列出存圖的資料夾
 	$cc = $cc + 1;
 } 
 closedir($handle); 
@@ -75,7 +75,7 @@ if($qs2>$pg_max){
 if($arr_ct%10 != 0){$pg_max=$pg_max+1;}
 $cc=1;$pg_html='';$FFF='';
 for($i=0;$i<$pg_max;$i++){
-	if($i == $qs2){$FFF="&nbsp;&#9619;&#9618;&#9617;";}else{$FFF='';}
+	if($i == $qs2){$FFF="&nbsp;<span id='menu2_pi'>&#9619;&#9618;&#9617;</span>";}else{$FFF='';}
 	$pg_html.="<a href='".$phpself."?".$ym."!".$i."'>".$i."</a>".$FFF;
 	$pg_html.="<br/>\n";
 	$cc=$cc+1;
@@ -86,7 +86,7 @@ for($i=0;$i<$pg_max;$i++){
 $cc=1;$pic='';
 foreach($FFF_arr as $k => $v ){
 	//if(){continue;}
-	if( ($cc> ($qs2)*10 ) && ($cc<= ($qs2+1)*10 ) ){
+	if( ($k>= ($qs2)*10 ) && ($k< ($qs2+1)*10 ) ){
 		//$pic_src=$phpdir.$dir_mth.$v;
 		$pic_src=$dir_mth.$v;
 		//$pic_size=filesize($pic_src);
@@ -94,7 +94,7 @@ foreach($FFF_arr as $k => $v ){
 		$fn_a=substr($fn,0,strrpos($fn,".")); //主檔名
 		$fn_b=strrpos($fn,".")+1-strlen($fn);
 		$fn_b=substr($fn,$fn_b); //副檔名
-		$pic.= $cc;
+		$pic.= $k;
 		if(strtolower($fn_b) == "gif"){$pic.="GIF";}
 		$pic.= "<br/>\n";
 		$pic.= "<a href='".$pic_src."' target='_blank'><img src='".$pic_src."'/></a>";
@@ -143,11 +143,23 @@ border:1px solid blue;
 </STYLE>
 <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script language="Javascript">
-window.onresize = reset = function () { document.getElementById("menu").style.height = (document.documentElement.clientHeight - 60) + "px"; }
-$(document).ready(function(){reset();});
+
+function reset() { 
+	$("#menu2").height = ($(window).innerHeight() - 60) + "px"; //選單高度修正
+}
+$(document).ready(function(){
+	//$(window).resize(function(){});
+	window.onresize = reset();
+	//$("#menu2").scrollTop(tmp);
+	//$("#menu2").height()
+	var tmp1 = $("#menu2").height();
+	var tmp2 = $("#menu2_pi").position().top - (tmp1/2); //
+	$("#menu2").animate({scrollTop: tmp2 },1000,"swing");
+////
+});
 </script>
 </head>
-<body bgcolor="#FFFFEE" text="#800000" link="#0000EE" vlink="#0000EE">
+<body bgcolor="#FFFFEE" text="#800000" link="#0000EE" vlink="#0000ee">
 
 EOT;
 $x="\n".$x."\n";
