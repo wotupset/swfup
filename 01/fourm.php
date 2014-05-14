@@ -6,6 +6,8 @@ $phplink="http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."";
 $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 //**********
+if(!is_dir($dir_mth)){die('[x]');}
+if(!is_writeable(realpath($dir_mth))){die("目錄沒有寫入權限"); }
 $url=$dir_mth;
 $handle=opendir($url); 
 $cc = 0;

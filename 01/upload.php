@@ -63,7 +63,7 @@ if($chk_safemode_){//有安全模式
 	}
 	$FFF="_fourm_self.php";
 	if(!is_file($dir_mth.$FFF && is_file($FFF) )){
-		copy($FFF, $dir_mth.$FFF);//複製檔案到目錄
+		//copy($FFF, $dir_mth.$FFF);//複製檔案到目錄
 	}
 	$FFF=move_uploaded_file($_FILES["Filedata"]['tmp_name'], $dir_mth."_".$date_now."_".$fn_a.".".$fn_b);
 }

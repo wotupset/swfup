@@ -107,8 +107,10 @@ foreach($FFF_arr as $k => $v ){
 }
 
 $htmlbody=<<<EOT
-<div id="menu2" style="z-index:9;position: fixed; margin: 0px; padding: 0px 10px 10px; left: 0px; top: 0px; color: #cc0000; background-color: #ffffff; border-right: 1px black solid; overflow: auto; width: 125px;height:90%;">
-	$pg_html
+<div id="menu2" style="z-index:9;position: fixed; margin: 0px; padding: 0px; left: 0px; top: 0px; color: #cc0000; background-color: #ffffff; border-right: 1px black solid; overflow: auto; width: 125px;height:90%;">
+	<div style="padding: 10px;">
+		$pg_html
+	</div>
 </div>
 <div id="menu3" style="z-index:8;position: fixed; margin-bottom: 0px; padding: 5px; width: 100%; left: 0px; bottom: 0px; color: #cc0000; background-color: #ffffee; border-top: 1px black solid; ">
 	<div style="font-size: 12px;margin-bottom:5px;">
@@ -155,10 +157,13 @@ function reset() {
 	//document.getElementById("menu2").style.height = "200px";
 	var tmp4 = $("#menu3").outerHeight(true);//下方選單高度// set to true, the margin (top and bottom) is also included.
 	//alert(tmp4);
-	var tmp3 = $(document.body)[0].clientHeight -tmp4 -12;//計算左側選單底部要縮多少高度
+	var tmp3 = $(document.body)[0].clientHeight -tmp4;//計算左側選單底部要縮多少高度
 	$("#menu2").height(tmp3);
 	var tmp5 = tmp4 +20;//計算右側內容底部要墊多少高度
-	$("#right_content").css("margin-bottom",tmp5+"px");
+	$("#right_content").css("margin-bottom",tmp5+"px");//修正右側內容範圍
+	var tmp6 = $("#menu2").outerWidth(true);//左側選單寬度
+	var tmp7 = tmp6 +20;//計算右側內容左方要墊多少高度
+	$("#right_content").css("margin-left",tmp7+"px");//修正右側內容範圍
 	////
 }
 ////
