@@ -114,11 +114,11 @@ $htmlbody=<<<EOT
 </div>
 <div id="menu3" style="z-index:8;position: fixed; margin-bottom: 0px; padding: 5px; width: 100%; left: 0px; bottom: 0px; color: #cc0000; background-color: #ffffee; border-top: 1px black solid; ">
 	<div style="font-size: 12px;margin-bottom:5px;">
-		年月 $ym 分頁 $qs2 <br/>
+		<a href='index.php'>返回</a> $ym/$qs2 <br/>
 		$list_dir_html
 	</div>
 </div>
-<div id="right_content" style="margin: auto auto 50px 160px;">
+<div id="right_content" style="margin-bottom:60px; margin-left:160px;">
 	$pic
 </div>
 EOT;
@@ -138,7 +138,7 @@ $x=<<<EOT
 <META HTTP-EQUIV="EXPIRES" CONTENT="Thu, 15 Jan 2009 05:12:01 GMT">
 <META NAME="ROBOTS" CONTENT="INDEX,FOLLOW">
 <STYLE TYPE="text/css">
-body2 { font-family:"細明體",'MingLiU'; }
+body { font-family:'Courier New',"細明體",'MingLiU'; }
 img {
 height:auto; width:auto; 
 min-width:20px; min-height:20px;
@@ -151,28 +151,16 @@ border:1px solid blue;
 
 ////
 function reset() { 
-	//var tmp1 = tmp2 = tmp3 = 0;alert(tmp2);
-	//(tmp3.clientHeight - 200)
-	//$("#menu2").height =  "400px"; //選單高度修正
-	//document.getElementById("menu2").style.height = "200px";
 	var tmp4 = $("#menu3").outerHeight(true);//下方選單高度// set to true, the margin (top and bottom) is also included.
-	//alert(tmp4);
 	var tmp3 = $(document.body)[0].clientHeight -tmp4;//計算左側選單底部要縮多少高度
 	$("#menu2").height(tmp3);
-	var tmp5 = tmp4 +20;//計算右側內容底部要墊多少高度
-	$("#right_content").css("margin-bottom",tmp5+"px");//修正右側內容範圍
-	var tmp6 = $("#menu2").outerWidth(true);//左側選單寬度
-	var tmp7 = tmp6 +20;//計算右側內容左方要墊多少高度
-	$("#right_content").css("margin-left",tmp7+"px");//修正右側內容範圍
-	////
+	//var tmp5 = tmp4 +20;//計算右側內容底部要墊多少高度
+	//$("#right_content").css("margin-bottom",tmp5+"px");//修正右側內容範圍
 }
 ////
 $(document).ready(function(){
 	reset();
-	$(window).resize(function(){reset();});
-	//window.onresize = reset();
-	//$("#menu2").scrollTop(tmp);
-	//$("#menu2").height()
+	$(window).resize(function(){reset();});//window.onresize = reset();
 ////
 	var tmp1 = $("#menu2").height();//左側選單高度
 	var tmp2 = $("#menu2_pi").position().top - (tmp1/2); //計算左側選單捲軸要停留的位置
