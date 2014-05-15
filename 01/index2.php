@@ -110,6 +110,7 @@ SWFUpload.onload = function () {
 </div>
 <?php
 if(!is_writeable(realpath("./"))){echo "根目錄無法寫入";}
+echo $echo=ini_get('upload_max_filesize');
 ?>
 </body>
 </html>
