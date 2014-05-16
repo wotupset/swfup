@@ -39,9 +39,17 @@ if(is_dir("./safemode=NO/") || is_dir("./safemode=YES/") ){//檢查是否有檢�
 //抓出上傳檔案的副檔名
 $fn=$_FILES["Filedata"]['name'];
 $fn_a=substr($fn,0,strrpos($fn,".")); //主檔名
+//修飾
 $fn_a=strZHcut($fn_a);//主檔名
+$fn_a=preg_replace("/\]/","_",$fn_a);
+$fn_a=preg_replace("/\[/","_",$fn_a);
+$fn_a=preg_replace("/ /","_",$fn_a);
+$fn_a=preg_replace("/\./","_",$fn_a);
+//
 $fn_b=strrpos($fn,".")+1-strlen($fn);
 $fn_b=substr($fn,$fn_b); //副檔名
+//修飾
+if($fn_b=="jpeg"){$fn_b="jpg";}
 ////
 //排除的檔案
 if($fn_b=="php"){exit;}//忽略檔案(安全考量)
