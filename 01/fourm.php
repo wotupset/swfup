@@ -2,6 +2,7 @@
 date_default_timezone_set("Asia/Taipei");//時區設定 Etc/GMT+8
 $time=time();
 $dir_mth="./_".date("ym",$time)."/"; //存放該月檔案
+$query_string=$_SERVER['QUERY_STRING'];
 $phplink="http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."";
 $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
@@ -30,7 +31,14 @@ foreach($FFF_arr as $k => $v ){
 	if($cc>100){break;}
 	echo $k;
 	echo "\n";
-	echo "[img]".$phpdir.$dir_mth.$v."[/img]";
+	switch($query_string){
+		case 'a':
+			echo "[img]".$phpdir."img_hot.php?".$dir_mth.$v."[/img]";
+		break;
+		default:
+			echo "[img]".$phpdir.$dir_mth.$v."[/img]";
+		break;
+	}
 	echo "\n";
 	$cc=$cc+1;
 

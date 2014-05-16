@@ -40,8 +40,8 @@ if($pg_n>$pg_max){$pg_n=$pg_max;}//指定頁數太大 就更換成max值
 $cc=1;$pg_html='';$FFF='';
 for($i=0;$i<$pg_max;$i++){
 	if($i == $pg_n){$FFF="&nbsp;<span id='menu2_pi'>&#9619;&#9618;&#9617;</span>";}else{$FFF='';}
-	$pg_html.="<a href='".$phpself."?".$i."'>".$i."</a>".$FFF;
-	$pg_html.="<br/>\n";
+	$pg_html.="<a class='link' href='".$phpself."?".$i."'>".$i.$FFF."</a>";
+	//$pg_html.="<br/>\n";
 	$cc=$cc+1;
 
 }
@@ -105,6 +105,8 @@ min-width:20px; min-height:20px;
 max-width:250px; max-height:250px;
 border:1px solid blue;
 }
+.link {display:block;}
+.link:hover {background-color:#F0E0D6;}
 </STYLE>
 <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script language="Javascript">
