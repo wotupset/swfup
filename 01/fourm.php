@@ -7,7 +7,10 @@ $phplink="http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."";
 $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 //**********
-if(!is_dir($dir_mth)){die('[x]');}
+if(!is_dir($dir_mth)){
+	$dir_mth="./safemode/";
+	if(!is_dir($dir_mth)){die('[x]dir');}
+}
 if(!is_writeable(realpath($dir_mth))){die("目錄沒有寫入權限"); }
 $url=$dir_mth;
 $handle=opendir($url); 
@@ -29,8 +32,6 @@ echo "<pre>";
 $cc=0;
 foreach($FFF_arr as $k => $v ){
 	if($cc>100){break;}
-	echo $k;
-	echo "\n";
 	switch($query_string){
 		case 'a':
 			echo "[img]".$phpdir."img_hot.php?".$dir_mth.$v."[/img]";
@@ -39,6 +40,8 @@ foreach($FFF_arr as $k => $v ){
 			echo "[img]".$phpdir.$dir_mth.$v."[/img]";
 		break;
 	}
+	echo "\n";
+	echo $k;
 	echo "\n";
 	$cc=$cc+1;
 
