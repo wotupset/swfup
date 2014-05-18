@@ -34,8 +34,14 @@ sort($FFF_arr);//排序 舊的在前
 //列出左側分頁
 $arr_count=count($FFF_arr);//計算數量
 $pg_max=floor($arr_count/10);
-if($arr_count%10 != 0){$pg_max=$pg_max+1;} //有餘數再加一
 if($pg_n>$pg_max){$pg_n=$pg_max;}//指定頁數太大 就更換成max值
+
+if(preg_match("/^new$/",$query_string,$match)){$pg_n=$pg_max;}
+if($query_string==''){$pg_n=$pg_max;}
+
+if($arr_count%10 != 0){$pg_max=$pg_max+1;} //有餘數再加一
+
+
 
 $cc=1;$pg_html='';$FFF='';
 for($i=0;$i<$pg_max;$i++){

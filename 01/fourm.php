@@ -29,9 +29,10 @@ closedir($handle);
 rsort($FFF_arr);
 //echo "<pre>".print_r($FFF_arr,true)."</pre>";
 echo "<pre>";
-$cc=0;
+$cc=1;
 foreach($FFF_arr as $k => $v ){
 	if($cc>100){break;}
+	echo $cc;
 	switch($query_string){
 		case 'a':
 			echo "[img]".$phpdir."img_hot.php?".$dir_mth.$v."[/img]";
@@ -40,8 +41,6 @@ foreach($FFF_arr as $k => $v ){
 			echo "[img]".$phpdir.$dir_mth.$v."[/img]";
 		break;
 	}
-	echo "\n";
-	echo $k;
 	echo "\n";
 	$cc=$cc+1;
 
