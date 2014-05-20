@@ -89,7 +89,7 @@ $cc=1;$pg_html='';$FFF='';
 for($i=0;$i<$pg_max;$i++){
 	if($cc == $qs2){$FFF="&nbsp;<span id='menu2_pi'>&#9619;&#9618;&#9617;</span>";}else{$FFF='';}
 	$pg_html.="<a class='link' href='".$phpself."?".$ym."!".$cc."'>".$cc.$FFF."</a>";
-	//$pg_html.="<br/>\n";
+	$pg_html.="\n";
 	$cc=$cc+1;
 
 }

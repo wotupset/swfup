@@ -1,14 +1,14 @@
 <?php
-error_reporting(E_ALL & ~E_NOTICE); //©Ò¦³¿ù»~¤¤±Æ°£NOTICE´£¥Ü
-date_default_timezone_set("Asia/Taipei");//®É°Ï³]©w Etc/GMT+8
+error_reporting(E_ALL & ~E_NOTICE); //
+date_default_timezone_set("Asia/Taipei");//
 $time=time();
 $ym=date("ym",$time);
-
+$phpself=basename($_SERVER["SCRIPT_FILENAME"]);//
 ////
 $query_string=$_SERVER['QUERY_STRING'];
 if(!$query_string){die('x000');}
 //
-$array=getimagesize($query_string);//¬O§_¬°¹Ï¤ù
+$array=getimagesize($query_string);//å–å¾—åœ–ç‰‡è³‡è¨Š //éåœ–ç‰‡å‚³å›ç©ºç™½å€¼
 //print_r($array);exit;
 /*
     [0] => 1440
@@ -24,7 +24,7 @@ $array=getimagesize($query_string);//¬O§_¬°¹Ï¤ù
 */
 if(!$array[2]){die('x200');}
 //
-$contents = file_get_contents($query_string);//¨ú±oÀÉ®×¤º®e
+$contents = file_get_contents($query_string);//å–å¾—åœ–ç‰‡å®Œæ•´å…§å®¹
 if($content === FALSE){die('x300');}
 //
 $dir_mth="./_".$ym."/"; //
@@ -45,7 +45,7 @@ default:
 break;
 
 }
-$yesno = file_put_contents($dir_mth."_".$date_now."_".$time.".".$ext , $contents );//«Ø¥ßÀÉ®×¤º®e
+$yesno = file_put_contents($dir_mth."_".$date_now."_".$time.".".$ext , $contents );//å„²å­˜åœ–ç‰‡å…§å®¹
 if($yesno === FALSE){die('x400');}
 //
 /*
@@ -62,7 +62,25 @@ if(function_exists("mime_content_type")){
 }
 */
 //
-Header("Content-type:".$array['mime']);//«ü©w¤å¥óÃş«¬
+Header("Content-type:".$array['mime']);//è¼¸å‡ºåˆ°ç€è¦½å™¨
 echo $contents;
 exit;
+
+
+$echo=<<<EOT
+<!DOCTYPE html>
+<html>
+<head>
+<title>æµ®æ°´å°</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body bgcolor="#FFFFEE" text="#800000" link="#0000EE" vlink="#0000EE">
+<form enctype="multipart/form-data" action='$phpself' method="post">
+<input type="text" name="input_a" size="500" placeholder="url">
+<input type="submit" value=" send "><br/>
+<label>é‡æ–°è®€åœ–<input type="checkbox" name="input_b" value="1" />(ç ´åœ–æ™‚ä½¿ç”¨)</label>
+</form>
+</body>
+</html>
+EOT;
 ?>

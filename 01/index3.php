@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
 <title>SWFUpload Demos - Simple Demo</title>
@@ -60,7 +60,7 @@
 
 <div id="content">
 	<h2>Simple Demo</h2>
-	<form id="form1" action="index.php" method="post" enctype="multipart/form-data">
+	<form id="form1" action="index3.php" method="post" enctype="multipart/form-data">
 		<p>This page demonstrates a simple usage of SWFUpload.  It uses the Queue Plugin to simplify uploading or cancelling all queued files.</p>
 
 			<div class="fieldset flash" id="fsUploadProgress">

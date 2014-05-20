@@ -70,7 +70,7 @@ SWFUpload.onload = function () {
 <div id="content">
 
 	<h2>SWFObject Demo</h2>
-	<form id="form1" action="index.php" method="post" enctype="multipart/form-data">
+	<form id="form1" action="index2.php" method="post" enctype="multipart/form-data">
 		<p> This page demonstrates the SWFObject plugin.  Do each of the following (one at a time) to see the plugin work: </p>
 			<ul>
 				<li>Uninstall your Flash Player or install a version less than 9.0.28</li>
