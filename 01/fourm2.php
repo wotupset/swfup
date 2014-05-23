@@ -139,6 +139,7 @@ echo htmlend();
 
 function htmlhead(){
 $x=<<<EOT
+
 <html><head>
 <title>$ymdhis</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

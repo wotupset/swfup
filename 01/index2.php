@@ -112,6 +112,7 @@ SWFUpload.onload = function () {
 if(!is_writeable(realpath("./"))){echo "根目錄無法寫入";}
 if(!is_writeable("safemode")){echo "safemode目錄無法寫入";}
 echo $echo=ini_get('upload_max_filesize');
+echo $phppath=dirname($_SERVER["SCRIPT_FILENAME"]);//絕對路徑
 ?>
 </body>
 </html>

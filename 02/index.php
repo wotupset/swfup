@@ -130,7 +130,6 @@ $ver_info
 EOT;
 $httpbody.=$tmp_str;
 $httpbody.="\n<tbody>\n";
-//
 for($i = 0; $i < $line; $i++){//從頭
 	$tmp_0_i=$tmp[0][$i];
 	$tmp_1_i=$tmp[1][$i];
@@ -141,12 +140,10 @@ for($i = 0; $i < $line; $i++){//從頭
 	}else{//不是資料夾
 		$tmp_0_i_dirmark="";
 	}
-$FFF=rawurldecode($tmp_0_i);
-
 $httpbody.=<<<EOT
 <tr>
 <td class="td_left" style='text-align: right;'><span class="span_left"><span class="span2_left">$tmp_1_i</span></span></td>
-<td class="td_right" style='text-align: left;' ><span class="span_right"><a href='./$FFF'>$tmp_0_i</a>$tmp_0_i_dirmark</span></td>
+<td class="td_right" style='text-align: left;' ><span class="span_right"><a href='./$tmp_0_i'>$tmp_0_i</a>$tmp_0_i_dirmark</span></td>
 </tr>
 
 EOT;
