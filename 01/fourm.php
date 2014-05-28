@@ -4,6 +4,7 @@ $time=time();
 $dir_mth="./_".date("ym",$time)."/"; //存放該月檔案
 $query_string=$_SERVER['QUERY_STRING'];
 $phplink="http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."";
+$phphost=$_SERVER["SERVER_NAME"];
 $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 //**********
@@ -29,6 +30,9 @@ closedir($handle);
 rsort($FFF_arr);
 //echo "<pre>".print_r($FFF_arr,true)."</pre>";
 echo "<pre>";
+
+echo "[url=".$phpdir."fourm2.php]".$phphost."[/url]";
+echo "\n";
 $cc=1;
 foreach($FFF_arr as $k => $v ){
 	if($cc>100){break;}

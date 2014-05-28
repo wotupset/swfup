@@ -21,9 +21,8 @@ if(preg_match("/^([0-9]{4})!([0-9]+)$/",$query_string,$match)){
 		$ym=$qs1;//有指定的話 更換資料夾
 	}
 }
-
-
 unset($match);
+//沒定義的情況
 if(!$qs1){$qs1=$ym;}
 if(!$qs2){$qs2=1;}
 
@@ -38,9 +37,11 @@ $cc = 0;
 $FFF_arr=array();$FFF_arr2=array();
 while(($file = readdir($handle))!==false) { 
 	$chk=0;
-	if(preg_match("/\.jpg$/i",$file)){$chk=1;}//只要圖
-	if(preg_match("/\.png$/i",$file)){$chk=1;}//只要圖
-	if(preg_match("/\.gif$/i",$file)){$chk=1;}//只要圖
+	$ext = pathinfo($file,PATHINFO_EXTENSION);//副檔名
+	if($ext == "jpg"){$chk=1;}//只要圖
+	if($ext == "png"){$chk=1;}//只要圖
+	if($ext == "gif"){$chk=1;}//只要圖
+	//if(preg_match("/\.gif$/i",$file)){$chk=1;}//只要圖
 	if($chk==1){$FFF_arr[]=$file;}
 	$cc = $cc + 1;
 } 
@@ -79,9 +80,8 @@ $pg_max=ceil($arr_ct/10);
 //ceil 函数向上舍入为最接近的整数
 //floor 函数向下舍入为最接近的整数
 //if($arr_ct%10 == 0){$pg_max=$pg_max-1;}//剛好除盡 就減去一個分頁
-if($qs2>$pg_max){
-	$qs2=$pg_max;
-}
+if($qs2>$pg_max){$qs2=$pg_max;}
+if(!isset($match[2])){$qs2=$pg_max;}
 if(preg_match("/^new$/",$query_string,$match)){$qs2=$pg_max;}
 if($query_string==''){$qs2=$pg_max;}
 
@@ -98,7 +98,7 @@ for($i=0;$i<$pg_max;$i++){
 $cc=1;$pic='';
 foreach($FFF_arr as $k => $v ){
 	//if(){continue;}
-	if( ($k>= ($qs2-1)*10 ) && ($k< ($qs2)*10 ) ){
+	if( ($k>= ($qs2-1)*10 ) && ($k< ($qs2)*10 ) ){//分頁輸出
 		//$pic_src=$phpdir.$dir_mth.$v;
 		$pic_src=$dir_mth.$v;
 		//$pic_size=filesize($pic_src);

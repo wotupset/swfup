@@ -60,8 +60,14 @@ if($fn_b=="php"){$ban=1;}//忽略檔案(安全考量)
 if($fn_b=="exe"){$ban=1;}//忽略檔案(安全考量)
 //只允許圖片
 $info_array=getimagesize($_FILES["Filedata"]['tmp_name']);if(!$info_array[2]){$ban=1;}
-if($_FILES["Filedata"]['size'] > 10*1024*1024){$ban=1;}//允許的檔案大小上限
-if($ban){header("Status: 500");exit;}
+//允許的檔案大小上限
+if($_FILES["Filedata"]['size'] > 10*1024*1024){$ban=1;}
+//回傳自訂的錯誤訊息
+if($ban){
+//header("Status: 405");
+header("HTTP/1.0 405 Not Found");
+exit;
+}
 ////
 //存放檔案
 $date_now=date("d", $time)."v".date("His", $time);

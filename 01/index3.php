@@ -75,8 +75,8 @@
 	</form>
 </div>
 <?php
-if(!is_writeable(realpath("./"))){echo "®Ú¥Ø¿ýµLªk¼g¤J";}
-if(!is_writeable("safemode")){echo "safemode¥Ø¿ýµLªk¼g¤J";}
+if(!is_writeable(realpath("./"))){echo "æ ¹ç›®éŒ„ç„¡æ³•å¯«å…¥";}
+if(!is_writeable("safemode")){echo "safemodeç›®éŒ„ç„¡æ³•å¯«å…¥";}
 echo $echo=ini_get('upload_max_filesize');
 ?>
 </body>
