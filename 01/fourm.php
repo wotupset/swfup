@@ -28,6 +28,15 @@ while(($file = readdir($handle))!==false) {
 closedir($handle); 
 //**********
 rsort($FFF_arr);
+//
+$FFF=$phpdir."XPButtonUploadText_61x22.png";
+$array=getimagesize($FFF);//取得圖片資訊 //非圖片傳回空白值
+//print_r($array);exit;
+if($query_string == ""){
+	if(!$array[2]){
+		$query_string = "a";
+	}
+}
 //echo "<pre>".print_r($FFF_arr,true)."</pre>";
 echo "<pre>";
 
