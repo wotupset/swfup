@@ -8,23 +8,28 @@ $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 $phpself=basename($_SERVER["SCRIPT_FILENAME"]);//被執行的文件檔名
 //**********
+$ver = "150530";
+$ver_md5=md5($ver);
+$ver_color=substr($ver_md5,0,6);
+//**********
+
 
 if(preg_match("/^([0-9]{4})!([0-9]+)$/",$query_string,$match)){
 	//$match[1]=ym
 	//$match[2]=pg
 	$qs1=$match[1];
 	$qs2=$match[2];
-	$ym=$qs1;//有指定的話 更換資料夾
+	$qs2=floor($qs2);//
 }else{
+	//沒定義的情況
+	$qs1=$ym;
+	$qs2=0;
 	if(preg_match("/^([0-9]{4})$/",$query_string,$match)){
 		$qs1=$match[1];
-		$ym=$qs1;//有指定的話 更換資料夾
 	}
 }
+$ym=$qs1;//有指定的話 更換資料夾
 unset($match);
-//沒定義的情況
-if(!$qs1){$qs1=$ym;}
-if(!$qs2){$qs2=1;}
 
 //**********
 $dir_mth="./_".$ym."/"; //存放該月檔案
@@ -67,10 +72,17 @@ sort($FFF_arr2);//排序 舊的在前
 //**********
 //列出底部關聯資料夾
 $list_dir_html='';
+$list_dir_html.="<a href='./'>返回</a>";
+$list_dir_html.="\n";
+$list_dir_html.='月'.$ym.'頁'.$qs2 ;
+$list_dir_html.="\n";
+$list_dir_html.="<span style='color:#".$ver_color.";'>".$ver_color."</span>";
+$list_dir_html.="<br/>\n";
 foreach($FFF_arr2 as $k => $v ){
 	$list_dir_html.="<a href='".$phpself."?".$v."'>".$v."</a>";
 	$list_dir_html.="\n";
 }
+
 
 //**********
 //列出左側分頁
@@ -81,9 +93,9 @@ $pg_max=ceil($arr_ct/10);
 //floor 函数向下舍入为最接近的整数
 //if($arr_ct%10 == 0){$pg_max=$pg_max-1;}//剛好除盡 就減去一個分頁
 if($qs2>$pg_max){$qs2=$pg_max;}
-if(!isset($match[2])){$qs2=$pg_max;}
-if(preg_match("/^new$/",$query_string,$match)){$qs2=$pg_max;}
-if($query_string==''){$qs2=$pg_max;}
+if($qs2 == 0){$qs2=$pg_max;}
+if($qs2 == ''){$qs2=$pg_max;}
+//if(preg_match("/^new$/",$query_string,$match)){$qs2=$pg_max;}
 
 $cc=1;$pg_html='';$FFF='';
 for($i=0;$i<$pg_max;$i++){
@@ -123,7 +135,6 @@ $htmlbody=<<<EOT
 </div>
 <div id="menu3" style="z-index:8;position: fixed; margin-bottom: 0px; padding: 5px; width: 100%; left: 0px; bottom: 0px; color: #cc0000; background-color: #ffffee; border-top: 1px black solid; ">
 	<div style="font-size: 12px;margin-bottom:5px;">
-		<a href='index.php'>返回</a> $ym/$qs2 <br/>
 		$list_dir_html
 	</div>
 </div>
