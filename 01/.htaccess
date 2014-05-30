@@ -1,7 +1,3 @@
 
 ErrorDocument 404 /swfup/01/url-rewriting.php
 
-RewriteEngine on
-RewriteCond %{HTTP_REFERER} !^$
-RewriteCond %{HTTP_REFERER} !wotupset.howbbs.com [NC]
-RewriteRule \.(jpg|jpeg|png|gif)$ http://chaika.gota.pw/favicon.png [NC,R,L]
