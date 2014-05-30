@@ -1,4 +1,5 @@
 <?php
+//簡易型相簿
 date_default_timezone_set("Asia/Taipei");//時區設定 Etc/GMT+8
 $time=time();
 $ym=date("ym",$time);
@@ -8,11 +9,14 @@ $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 $phpself=basename($_SERVER["SCRIPT_FILENAME"]);//被執行的文件檔名
 //**********
-if(preg_match("/^([0-9]+)/",$query_string,$match)){
-	$pg_n=$match[1];//分頁的頁數
+$ver = "150530";
+$ver_md5=md5($ver);
+$ver_color=substr($ver_md5,0,6);
+$ver_span="<span style='color:#".$ver_color.";'>".$ver_color."</span>";
+//**********
+if(preg_match("/[0-9]+/",$query_string)){
+	$page = floor($query_string);
 }
-unset($match);
-if(!$pg_n){$pg_n=0;}//沒指定就是0
 
 //**********
 $dir_mth="./"; //掃描根目錄
@@ -30,24 +34,23 @@ while(($file = readdir($handle))!==false) {
 } 
 closedir($handle); 
 sort($FFF_arr);//排序 舊的在前
+//print_r($FFF_arr);exit;
 //**********
 //列出左側分頁
 $arr_count=count($FFF_arr);//計算數量
-$pg_max=floor($arr_count/10);
-if($pg_n>$pg_max){$pg_n=$pg_max;}//指定頁數太大 就更換成max值
-
-if(preg_match("/^new$/",$query_string,$match)){$pg_n=$pg_max;}
-if($query_string==''){$pg_n=$pg_max;}
-
-if($arr_count%10 != 0){$pg_max=$pg_max+1;} //有餘數再加一
-
+$pg_max=ceil($arr_count/10);
+//ceil 函数向上舍入为最接近的整数
+//floor 函数向下舍入为最接近的整数
+if($page>$pg_max){$qs2=$pg_max;}
+//if($page == 0){$qs2=$pg_max;}
+if(!$page){$qs2=$pg_max;}
 
 
 $cc=1;$pg_html='';$FFF='';
 for($i=0;$i<$pg_max;$i++){
-	if($i == $pg_n){$FFF="&nbsp;<span id='menu2_pi'>&#9619;&#9618;&#9617;</span>";}else{$FFF='';}
-	$pg_html.="<a class='link' href='".$phpself."?".$i."'>".$i.$FFF."</a>";
-	//$pg_html.="<br/>\n";
+	if($cc == $page){$FFF="&nbsp;<span id='menu2_pi'>&#9619;&#9618;&#9617;</span>";}else{$FFF='';}
+	$pg_html.="<a class='link' href='".$phpself."?".$cc."'>".$cc.$FFF."</a>";
+	$pg_html.="\n";
 	$cc=$cc+1;
 
 }
@@ -56,7 +59,7 @@ for($i=0;$i<$pg_max;$i++){
 $cc=1;$pic='';
 foreach($FFF_arr as $k => $v ){
 	//if(){continue;}
-	if( ($k>= ($pg_n)*10 ) && ($k< ($pg_n+1)*10 ) ){
+	if( ($k>= ($page-1)*10 ) && ($k< ($page)*10 ) ){//分頁輸出
 		//$pic_src=$phpdir.$dir_mth.$v;
 		$pic_src=$dir_mth.$v;
 		//$pic_size=filesize($pic_src);
@@ -64,7 +67,7 @@ foreach($FFF_arr as $k => $v ){
 		$fn_a=substr($fn,0,strrpos($fn,".")); //主檔名
 		$fn_b=strrpos($fn,".")+1-strlen($fn);
 		$fn_b=substr($fn,$fn_b); //副檔名
-		$pic.= $k;
+		$pic.= $cc;
 		if(strtolower($fn_b) == "gif"){$pic.="GIF";}
 		$pic.= "<br/>\n";
 		$pic.= "<a href='".$pic_src."' target='_blank'><img src='".$pic_src."'/></a>";
@@ -81,7 +84,7 @@ $htmlbody=<<<EOT
 </div>
 <div id="menu3" style="z-index:8;position: fixed; margin-bottom: 0px; padding: 5px; width: 100%; left: 0px; bottom: 0px; color: #cc0000; background-color: #ffffee; border-top: 1px black solid; ">
 	<div style="font-size: 12px;margin-bottom:5px;">
-		<a href='index2.php'>資料夾模式</a> 分頁 $pg_n <br/>
+		<a href='./index2.php'>資料夾模式</a> 頁$page $ver_span<br/>
 	</div>
 </div>
 <div id="right_content" style="margin: auto auto 50px 160px;">
@@ -97,14 +100,14 @@ echo htmlend();
 function htmlhead(){
 $x=<<<EOT
 <html><head>
-<title>$ymdhis</title>
+<title>AAA</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META http-equiv="Content-Script-Type" content="text/javascript">
 <META http-equiv="Content-Style-Type" content="text/css">
 <META HTTP-EQUIV="EXPIRES" CONTENT="Thu, 15 Jan 2009 05:12:01 GMT">
 <META NAME="ROBOTS" CONTENT="INDEX,FOLLOW">
 <STYLE TYPE="text/css">
-body2 { font-family:"細明體",'MingLiU'; }
+body { font-family:'Courier New',"細明體",'MingLiU'; }
 img {
 height:auto; width:auto; 
 min-width:20px; min-height:20px;

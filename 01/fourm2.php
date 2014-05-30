@@ -11,6 +11,7 @@ $phpself=basename($_SERVER["SCRIPT_FILENAME"]);//被執行的文件檔名
 $ver = "150530";
 $ver_md5=md5($ver);
 $ver_color=substr($ver_md5,0,6);
+$ver_span="<span style='color:#".$ver_color.";'>".$ver_color."</span>";
 //**********
 
 
@@ -76,7 +77,7 @@ $list_dir_html.="<a href='./'>返回</a>";
 $list_dir_html.="\n";
 $list_dir_html.='月'.$ym.'頁'.$qs2 ;
 $list_dir_html.="\n";
-$list_dir_html.="<span style='color:#".$ver_color.";'>".$ver_color."</span>";
+$list_dir_html.=$ver_span;
 $list_dir_html.="<br/>\n";
 foreach($FFF_arr2 as $k => $v ){
 	$list_dir_html.="<a href='".$phpself."?".$v."'>".$v."</a>";
@@ -152,7 +153,7 @@ function htmlhead(){
 $x=<<<EOT
 
 <html><head>
-<title>$ymdhis</title>
+<title>AAA</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META http-equiv="Content-Script-Type" content="text/javascript">
 <META http-equiv="Content-Style-Type" content="text/css">
