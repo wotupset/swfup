@@ -10,11 +10,15 @@ $rewrite = $url["basename"];//原始地址
 //echo $rewrite;
 $patterns = array();
 $patterns[0] = "/^1\.htm$/";
-$patterns[1] = "/^(.+\.jpg)$/";
+$patterns[1] = "/^(.+\.jpg)$/i";
+$patterns[2] = "/^(.+\.png)$/i";
+$patterns[3] = "/^(.+\.gif)$/i";
 //
 $replacements = array();
 $replacements[0] = "XPButtonUploadText_61x22.png";
 $replacements[1] = "./_".$ym."/$1";
+$replacements[2] = "./_".$ym."/$1";
+$replacements[3] = "./_".$ym."/$1";
 $rewrite_o=$rewrite;
 $rewrite = preg_replace($patterns, $replacements, $rewrite);//匹配后的地址
 //echo $rewrite;
