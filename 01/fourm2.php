@@ -13,8 +13,6 @@ $ver_md5=md5($ver);
 $ver_color=substr($ver_md5,0,6);
 $ver_span="<span style='color:#".$ver_color.";'>".$ver_color."</span>";
 //**********
-
-
 if(preg_match("/^([0-9]{4})!([0-9]+)$/",$query_string,$match)){
 	//$match[1]=ym
 	//$match[2]=pg
@@ -70,20 +68,6 @@ closedir($handle);
 sort($FFF_arr);//排序 舊的在前
 sort($FFF_arr2);//排序 舊的在前
 //print_r($FFF_arr2);
-//**********
-//列出底部關聯資料夾
-$list_dir_html='';
-$list_dir_html.="<a href='./'>返回</a>";
-$list_dir_html.="\n";
-$list_dir_html.='月'.$ym.'頁'.$qs2 ;
-$list_dir_html.="\n";
-$list_dir_html.=$ver_span;
-$list_dir_html.="<br/>\n";
-foreach($FFF_arr2 as $k => $v ){
-	$list_dir_html.="<a href='".$phpself."?".$v."'>".$v."</a>";
-	$list_dir_html.="\n";
-}
-
 
 //**********
 //列出左側分頁
@@ -104,7 +88,6 @@ for($i=0;$i<$pg_max;$i++){
 	$pg_html.="<a class='link' href='".$phpself."?".$ym."!".$cc."'>".$cc.$FFF."</a>";
 	$pg_html.="\n";
 	$cc=$cc+1;
-
 }
 //**********
 //列出右側圖片
@@ -127,7 +110,16 @@ foreach($FFF_arr as $k => $v ){
 	}
 	$cc=$cc+1;
 }
-
+//**********
+//列出底部關聯資料夾
+$list_dir_html='';
+foreach($FFF_arr2 as $k => $v ){
+	$list_dir_html.="<a href='".$phpself."?".$v."'>".$v."</a>";
+	$list_dir_html.="\n";
+}
+$list_dir_html="<a href='./'>返回</a>".' '.'月'.$ym.'頁'.$qs2.' '.$ver_span."<br/>\n".$list_dir_html;
+//**********
+//html主體
 $htmlbody=<<<EOT
 <div id="menu2" style="z-index:9;position: fixed; margin: 0px; padding: 0px; left: 0px; top: 0px; color: #cc0000; background-color: #ffffff; border-right: 1px black solid; overflow: auto; width: 125px;height:90%;">
 	<div style="padding: 10px;">

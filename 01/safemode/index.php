@@ -15,9 +15,8 @@ $ver_color=substr($ver_md5,0,6);
 $ver_span="<span style='color:#".$ver_color.";'>".$ver_color."</span>";
 //**********
 if(preg_match("/[0-9]+/",$query_string)){
-	$page = floor($query_string);
+	$page = abs(floor($query_string));
 }
-
 //**********
 $dir_mth="./"; //掃描根目錄
 $url=$dir_mth;
@@ -41,9 +40,8 @@ $arr_count=count($FFF_arr);//計算數量
 $pg_max=ceil($arr_count/10);
 //ceil 函数向上舍入为最接近的整数
 //floor 函数向下舍入为最接近的整数
-if($page>$pg_max){$qs2=$pg_max;}
-//if($page == 0){$qs2=$pg_max;}
-if(!$page){$qs2=$pg_max;}
+if($page>$pg_max){$page=$pg_max;}
+if(!$page){$page=$pg_max;} //為0的情況
 
 
 $cc=1;$pg_html='';$FFF='';
