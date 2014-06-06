@@ -39,10 +39,32 @@ if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
 	$fn_a=preg_replace("/\[/","_",$fn_a);
 	$fn_a=preg_replace("/ /","_",$fn_a);
 	$fn_a=preg_replace("/\./","_",$fn_a);
+	$fn_a=preg_replace("/_+/","_",$fn_a);
 	//
 	$fn_b=strrpos($fn,".")+1-strlen($fn);
 	$fn_b=substr($fn,$fn_b); //副檔名
+	//修飾
+	if($fn_b=="jpeg"){$fn_b="jpg";}
 	////
+	if(0){//0
+	//排除的檔案
+	$ban=0;
+	if($fn_b=="php"){$ban=1;}//忽略檔案(安全考量)
+	if($fn_b=="exe"){$ban=1;}//忽略檔案(安全考量)
+	//只允許圖片
+	$info_array=getimagesize($_FILES["upl"]['tmp_name']);if(floor($info_array[2]) == 0 ){$ban=1;}
+	//允許的檔案大小上限
+	if($_FILES["upl"]['size'] > 10*1024*1024){$ban=1;}
+	//回傳自訂的錯誤訊息
+	if($ban){
+		//header("Status: 405");
+		//header("HTTP/1.0 405 Not Found");
+		echo '{"status":"error"}';
+		exit;
+	}
+	}//0
+	////
+	//移動合格的檔案到資料夾
 	if(move_uploaded_file($_FILES['upl']['tmp_name'],   $dir_mth."_".$date_now."_".$fn_a.".".$fn_b)){
 		echo '{"status":"success"}';
 		exit;

@@ -43,9 +43,9 @@ while(($file = readdir($handle))!==false) {
 	$cc = $cc + 1;
 } 
 closedir($handle); 
-
-//**********
 sort($FFF_arr2);//排序 舊的在前
+//**********
+
 //print_r($FFF_arr2);
 
 
