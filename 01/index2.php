@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>SWFUpload Demos - SWFObject Demo</title>
-<link href="../css/default.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../swfupload/swfupload.js"></script>
+<link href="css/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="swfupload/swfupload.js"></script>
 <script type="text/javascript" src="js/swfupload.swfobject.js"></script>
 <script type="text/javascript" src="js/swfupload.queue.js"></script>
 <script type="text/javascript" src="js/fileprogress.js"></script>
@@ -14,7 +14,7 @@ var swfu;
 
 SWFUpload.onload = function () {
 	var settings = {
-		flash_url : "../swfupload/swfupload.swf",
+		flash_url : "swfupload/swfupload.swf",
 		upload_url: "upload.php",
 		post_params: {
 			"PHPSESSID" : "NONE",

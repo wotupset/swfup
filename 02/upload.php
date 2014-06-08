@@ -3,32 +3,70 @@ error_reporting(E_ALL & ~E_NOTICE); //所有錯誤中排除NOTICE提示
 date_default_timezone_set("Asia/Taipei");//時區設定 Etc/GMT+8
 $time=time();
 $ym=date("ym",$time);
-$dir_mth="../01/_".$ym."/"; //
 $date_now=date("d", $time)."v".date("His", $time);
 // A list of permitted file extensions
 $allowed = array('png', 'jpg', 'gif');
+////
+//檢查是否有安全模式
+$chk_safemode_= NULL;
+if(is_dir("../_up/safemode=NO/") || is_dir("../_up/safemode=YES/") ){//檢查是否有檢查過
+	if(is_dir("../_up/safemode=NO/")){$chk_safemode_=0;}
+	if(is_dir("../_up/safemode=YES/")){$chk_safemode_=1;}
+	//echo "跳過";
+}else{//沒檢查過
+	mkdir("../_up/safemode=CHK/", 0777); //建立資料夾 權限0777
+	copy("./index.php", "../_up/safemode=CHK/index.php");//複製index檔案到目錄
+	if(!is_dir("../_up/safemode=CHK/")){die('建立資料夾失敗');}
+	if(is_file("../_up/safemode=CHK/index.php")){//存在
+		rename("../_up/safemode=CHK/", "../_up/safemode=NO/"); //更名
+		$chk_safemode_=0;//沒有安全模式
+	}else{//還是不存在
+		rename("../_up/safemode=CHK/", "../_up/safemode=YES/"); //更名
+		$chk_safemode_=1;//有安全模式
+	}
+}
+////
+//存放檔案
+if($chk_safemode_){//有安全模式
+	$dir_mth="../safemode/";//
+	chmod($dir_mth, 0777); //權限0777
+}else{//無安全模式
+	$dir_mth="../_up/_".$ym."/"; //
+	if(!is_dir($dir_mth)){//若資料夾不存在 則建立
+		mkdir($dir_mth, 0777); //建立資料夾 權限0777
+		chmod($dir_mth, 0777); //權限0777
+	}
+	$FFF="index.php";
+	if(!is_file($dir_mth.$FFF) && is_file($FFF) ){
+		copy($FFF, $dir_mth.$FFF);//複製檔案到目錄
+	}
+	$FFF="_fourm_self.php";
+	if(!is_file($dir_mth.$FFF) && is_file($FFF) ){
+		//copy($FFF, $dir_mth.$FFF);//複製檔案到目錄
+	}
+}
 
+////
+/*
+if(!is_dir($dir_mth)){
+	mkdir($dir_mth, 0777); //建立資料夾 權限0777
+	chmod($dir_mth, 0777); //權限0777
+}
+if(is_dir($dir_mth)){
+	if(!is_file($dir_mth."index.php")){
+		copy("index.php",$dir_mth."index.php");
+	}
+}else{
+	die('x!dir'.$dir_mth);
+}
+*/
+////
 if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
-
 	$extension = pathinfo($_FILES['upl']['name'], PATHINFO_EXTENSION);
-
 	if(!in_array(strtolower($extension), $allowed)){
 		echo '{"status":"error"}';
 		exit;
 	}
-	////
-	if(!is_dir($dir_mth)){
-		$yesno=mkdir($dir_mth, 0777); //建立資料夾 權限0777
-		chmod($dir_mth, 0777); //權限0777
-	}
-	if(is_dir($dir_mth)){
-		if(!is_file($dir_mth."index.php")){
-			copy("index.php",$dir_mth."index.php");
-		}
-	}else{
-		if(!$yesno){die('x!dir');}
-	}
-	
 	/////
 	//抓出上傳檔案的副檔名
 	$fn=$_FILES['upl']['name'];
@@ -65,7 +103,8 @@ if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
 	}//0
 	////
 	//移動合格的檔案到資料夾
-	if(move_uploaded_file($_FILES['upl']['tmp_name'],   $dir_mth."_".$date_now."_".$fn_a.".".$fn_b)){
+	$filename_new=$dir_mth."_".$date_now."_".$fn_a.".".$fn_b;
+	if(move_uploaded_file($_FILES['upl']['tmp_name'], $filename_new)){
 		echo '{"status":"success"}';
 		exit;
 	}
