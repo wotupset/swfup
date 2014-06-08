@@ -59,7 +59,7 @@ $ban=0;
 if($fn_b=="php"){$ban=1;}//忽略檔案(安全考量)
 if($fn_b=="exe"){$ban=1;}//忽略檔案(安全考量)
 //只允許圖片
-$info_array=getimagesize($_FILES["Filedata"]['tmp_name']);if(!$info_array[2]){$ban=1;}
+$info_array=getimagesize($_FILES["Filedata"]['tmp_name']);if(floor($info_array[2])==0){$ban=1;}
 //允許的檔案大小上限
 if($_FILES["Filedata"]['size'] > 10*1024*1024){$ban=1;}
 //回傳自訂的錯誤訊息

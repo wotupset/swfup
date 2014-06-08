@@ -53,7 +53,7 @@ sort($FFF_arr2);//排序 舊的在前
 //建立存圖的資料夾
 $dir_mth="./_".$ym."/"; //存放該月檔案
 if(!is_dir($dir_mth)){//當月資料夾不存在
-	if($FFF_arr2[0]){//若有其他資料夾
+	if($FFF_arr2[0]){//若有其他資料夾 就連結過去
 		$ym=$FFF_arr2[0];
 		$dir_mth="./_".$ym."/"; //存放該月檔案
 		//echo $dir_mth;
