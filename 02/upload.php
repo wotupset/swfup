@@ -1,129 +1,114 @@
 <?php
-error_reporting(E_ALL & ~E_NOTICE); //©Ò¦³¿ù»~¤¤±Æ°£NOTICE´£¥Ü
-date_default_timezone_set("Asia/Taipei");//®É°Ï³]©w Etc/GMT+8
+error_reporting(E_ALL & ~E_NOTICE); //æ‰€æœ‰éŒ¯èª¤ä¸­æ’é™¤NOTICEæç¤º
+////
+	// Work-around for setting up a session because Flash Player doesn't send the cookies
+	if (isset($_POST["PHPSESSID"])) {
+		session_id($_POST["PHPSESSID"]);
+	}
+	session_start();
+
+	// The Demos don't save files
+
+	if (!isset($_FILES["Filedata"]) || !is_uploaded_file($_FILES["Filedata"]["tmp_name"]) || $_FILES["Filedata"]["error"] != 0) {
+		echo "There was a problem with the upload";
+		exit(0);
+	}
+////
+
+date_default_timezone_set("Asia/Taipei");//æ™‚å€è¨­å®š Etc/GMT+8
 $time=time();
 $ym=date("ym",$time);
 $date_now=date("d", $time)."v".date("His", $time);
-// A list of permitted file extensions
-$allowed = array('png', 'jpg', 'gif');
+
 ////
-//ÀË¬d¬O§_¦³¦w¥ş¼Ò¦¡
+//æª¢æŸ¥æ˜¯å¦æœ‰å®‰å…¨æ¨¡å¼
 $chk_safemode_= NULL;
-if(is_dir("../_up/safemode=NO/") || is_dir("../_up/safemode=YES/") ){//ÀË¬d¬O§_¦³ÀË¬d¹L
-	if(is_dir("../_up/safemode=NO/")){$chk_safemode_=0;}
-	if(is_dir("../_up/safemode=YES/")){$chk_safemode_=1;}
-	//echo "¸õ¹L";
-}else{//¨SÀË¬d¹L
-	mkdir("../_up/safemode=CHK/", 0777); //«Ø¥ß¸ê®Æ§¨ Åv­­0777
-	copy("./index.php", "../_up/safemode=CHK/index.php");//½Æ»sindexÀÉ®×¨ì¥Ø¿ı
-	if(!is_dir("../_up/safemode=CHK/")){die('«Ø¥ß¸ê®Æ§¨¥¢±Ñ');}
-	if(is_file("../_up/safemode=CHK/index.php")){//¦s¦b
-		rename("../_up/safemode=CHK/", "../_up/safemode=NO/"); //§ó¦W
-		$chk_safemode_=0;//¨S¦³¦w¥ş¼Ò¦¡
-	}else{//ÁÙ¬O¤£¦s¦b
-		rename("../_up/safemode=CHK/", "../_up/safemode=YES/"); //§ó¦W
-		$chk_safemode_=1;//¦³¦w¥ş¼Ò¦¡
+if(is_dir("../01/safemode=NO/") || is_dir("../01/safemode=YES/") ){//æª¢æŸ¥æ˜¯å¦æœ‰æª¢æŸ¥é
+	if(is_dir("../01/safemode=NO/")){$chk_safemode_=0;}
+	if(is_dir("../01/safemode=YES/")){$chk_safemode_=1;}
+	//echo "è·³é";
+}else{//æ²’æª¢æŸ¥é
+	mkdir("../01/safemode=CHK/", 0777); //å»ºç«‹è³‡æ–™å¤¾ æ¬Šé™0777
+	copy("./index.php", "../01/safemode=CHK/index.php");//è¤‡è£½indexæª”æ¡ˆåˆ°ç›®éŒ„
+	if(!is_dir("../01/safemode=CHK/")){die('å»ºç«‹è³‡æ–™å¤¾å¤±æ•—');}
+	if(is_file("../01/safemode=CHK/index.php")){//å­˜åœ¨
+		rename("../01/safemode=CHK/", "../01/safemode=NO/"); //æ›´å
+		$chk_safemode_=0;//æ²’æœ‰å®‰å…¨æ¨¡å¼
+	}else{//é‚„æ˜¯ä¸å­˜åœ¨
+		rename("../01/safemode=CHK/", "../01/safemode=YES/"); //æ›´å
+		$chk_safemode_=1;//æœ‰å®‰å…¨æ¨¡å¼
 	}
 }
 ////
-//¦s©ñÀÉ®×
-if($chk_safemode_){//¦³¦w¥ş¼Ò¦¡
-	$dir_mth="../safemode/";//
-	chmod($dir_mth, 0777); //Åv­­0777
-}else{//µL¦w¥ş¼Ò¦¡
-	$dir_mth="../_up/_".$ym."/"; //
-	if(!is_dir($dir_mth)){//­Y¸ê®Æ§¨¤£¦s¦b «h«Ø¥ß
-		mkdir($dir_mth, 0777); //«Ø¥ß¸ê®Æ§¨ Åv­­0777
-		chmod($dir_mth, 0777); //Åv­­0777
+if($chk_safemode_){//æœ‰å®‰å…¨æ¨¡å¼
+	$dir_mth="../01/safemode/";//
+	chmod($dir_mth, 0777); //æ¬Šé™0777
+}else{//ç„¡å®‰å…¨æ¨¡å¼
+	$dir_mth="../01/_".$ym."/"; //
+	if(!is_dir($dir_mth)){//è‹¥è³‡æ–™å¤¾ä¸å­˜åœ¨ å‰‡å»ºç«‹
+		mkdir($dir_mth, 0777); //å»ºç«‹è³‡æ–™å¤¾ æ¬Šé™0777
+		chmod($dir_mth, 0777); //æ¬Šé™0777
 	}
 	$FFF="index.php";
 	if(!is_file($dir_mth.$FFF) && is_file($FFF) ){
-		copy($FFF, $dir_mth.$FFF);//½Æ»sÀÉ®×¨ì¥Ø¿ı
+		copy($FFF, $dir_mth.$FFF);//è¤‡è£½æª”æ¡ˆåˆ°ç›®éŒ„
 	}
 	$FFF="_fourm_self.php";
 	if(!is_file($dir_mth.$FFF) && is_file($FFF) ){
-		//copy($FFF, $dir_mth.$FFF);//½Æ»sÀÉ®×¨ì¥Ø¿ı
+		//copy($FFF, $dir_mth.$FFF);//è¤‡è£½æª”æ¡ˆåˆ°ç›®éŒ„
 	}
 }
-
 ////
-/*
-if(!is_dir($dir_mth)){
-	mkdir($dir_mth, 0777); //«Ø¥ß¸ê®Æ§¨ Åv­­0777
-	chmod($dir_mth, 0777); //Åv­­0777
-}
-if(is_dir($dir_mth)){
-	if(!is_file($dir_mth."index.php")){
-		copy("index.php",$dir_mth."index.php");
-	}
-}else{
-	die('x!dir'.$dir_mth);
-}
-*/
-////
-if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
-	$extension = pathinfo($_FILES['upl']['name'], PATHINFO_EXTENSION);
-	if(!in_array(strtolower($extension), $allowed)){
-		echo '{"status":"error"}';
-		exit;
-	}
-	/////
-	//§ì¥X¤W¶ÇÀÉ®×ªº°ÆÀÉ¦W
-	$fn=$_FILES['upl']['name'];
-	$fn_a=substr($fn,0,strrpos($fn,".")); //¥DÀÉ¦W
-	//­×¹¢
-	$fn_a=strZHcut($fn_a);//¥DÀÉ¦W
-	$fn_a=preg_replace("/\]/","_",$fn_a);
-	$fn_a=preg_replace("/\[/","_",$fn_a);
-	$fn_a=preg_replace("/ /","_",$fn_a);
-	$fn_a=preg_replace("/\./","_",$fn_a);
-	$fn_a=preg_replace("/_+/","_",$fn_a);
-	//
-	$fn_b=strrpos($fn,".")+1-strlen($fn);
-	$fn_b=substr($fn,$fn_b); //°ÆÀÉ¦W
-	//­×¹¢
-	if($fn_b=="jpeg"){$fn_b="jpg";}
-	////
-	if(0){//0
-	//±Æ°£ªºÀÉ®×
-	$ban=0;
-	if($fn_b=="php"){$ban=1;}//©¿²¤ÀÉ®×(¦w¥ş¦Ò¶q)
-	if($fn_b=="exe"){$ban=1;}//©¿²¤ÀÉ®×(¦w¥ş¦Ò¶q)
-	//¥u¤¹³\¹Ï¤ù
-	$info_array=getimagesize($_FILES["upl"]['tmp_name']);if(floor($info_array[2]) == 0 ){$ban=1;}
-	//¤¹³\ªºÀÉ®×¤j¤p¤W­­
-	if($_FILES["upl"]['size'] > 10*1024*1024){$ban=1;}
-	//¦^¶Ç¦Û­qªº¿ù»~°T®§
-	if($ban){
-		//header("Status: 405");
-		//header("HTTP/1.0 405 Not Found");
-		echo '{"status":"error"}';
-		exit;
-	}
-	}//0
-	////
-	//²¾°Ê¦X®æªºÀÉ®×¨ì¸ê®Æ§¨
-	$filename_new=$dir_mth."_".$date_now."_".$fn_a.".".$fn_b;
-	if(move_uploaded_file($_FILES['upl']['tmp_name'], $filename_new)){
-		echo '{"status":"success"}';
-		exit;
-	}
-}
 
-echo '{"status":"error"}';
+//æŠ“å‡ºä¸Šå‚³æª”æ¡ˆçš„å‰¯æª”å
+$fn=$_FILES["Filedata"]['name'];
+$fn_a=substr($fn,0,strrpos($fn,".")); //ä¸»æª”å
+//ä¿®é£¾
+$fn_a=strZHcut($fn_a);//ä¸»æª”å
+$fn_a=preg_replace("/\]/","_",$fn_a);
+$fn_a=preg_replace("/\[/","_",$fn_a);
+$fn_a=preg_replace("/ /","_",$fn_a);
+$fn_a=preg_replace("/\./","_",$fn_a);
+$fn_a=preg_replace("/\./","_",$fn_a);
+$fn_a=preg_replace("/_+/","_",$fn_a);
+//
+$fn_b=strrpos($fn,".")+1-strlen($fn);
+$fn_b=substr($fn,$fn_b); //å‰¯æª”å
+//ä¿®é£¾
+if($fn_b=="jpeg"){$fn_b="jpg";}
+////
+//æ’é™¤çš„æª”æ¡ˆ
+$ban=0;
+if($fn_b=="php"){$ban=1;}//å¿½ç•¥æª”æ¡ˆ(å®‰å…¨è€ƒé‡)
+if($fn_b=="exe"){$ban=1;}//å¿½ç•¥æª”æ¡ˆ(å®‰å…¨è€ƒé‡)
+//åªå…è¨±åœ–ç‰‡
+$info_array=getimagesize($_FILES["Filedata"]['tmp_name']);if(floor($info_array[2])==0){$ban=1;}
+//å…è¨±çš„æª”æ¡ˆå¤§å°ä¸Šé™
+if($_FILES["Filedata"]['size'] > 10*1024*1024){$ban=1;}
+//å›å‚³è‡ªè¨‚çš„éŒ¯èª¤è¨Šæ¯
+if($ban){
+//header("Status: 405");
+header("HTTP/1.0 405 Not Found");
 exit;
-
+}
 ////
-function strZHcut($str){ //±NÀÉ¦W¤¤ªº¤¤¤å¥h±¼
+//å­˜æ”¾æª”æ¡ˆ
+$filename_new=$dir_mth."_".$date_now."_".$fn_a.".".$fn_b;
+$FFF=move_uploaded_file($_FILES["Filedata"]['tmp_name'], $filename_new);
+
+//çµæŸ
+exit(0);
+////
+function strZHcut($str){ //å°‡æª”åä¸­çš„ä¸­æ–‡å»æ‰
 	$len = strlen($str);
 	for($i = 0; $i < $len; $i++){
 		$char = $str{0};
 		if(ord($char) > 127){
 			$i++;
 			if($i < $len){
-				//$arr[] = substr($str, 0, 3);//¨ú0~3¦r¤¸ªº¦r¦ê¨ì°}¦C
-				$arr[] = "_";//¨ú0~3¦r¤¸ªº¦r¦ê¨ì°}¦C
-				$str = substr($str, 3); //¨ú3¦r¤¸¤§«áªº¦r¦ê
+				//$arr[] = substr($str, 0, 3);//å–0~3å­—å…ƒçš„å­—ä¸²åˆ°é™£åˆ—
+				$arr[] = "_";//å–0~3å­—å…ƒçš„å­—ä¸²åˆ°é™£åˆ—
+				$str = substr($str, 3); //å–3å­—å…ƒä¹‹å¾Œçš„å­—ä¸²
 			}
 		}else{
 			$arr[] = $char;
@@ -133,5 +118,6 @@ function strZHcut($str){ //±NÀÉ¦W¤¤ªº¤¤¤å¥h±¼
 	$str=join($arr); //array_reverse?
 	return $str;
 }
+////
 ////
 ?>
