@@ -1,10 +1,10 @@
 <?php
 $query_string=$_SERVER['QUERY_STRING'];
 //
-$yesno = is_file($query_string);//½T»{ÀÉ®×¦s¦b
+$yesno = is_file($query_string);//ç¢ºèªæª”æ¡ˆå­˜åœ¨
 if(!$yesno){die('x');}
 //
-$array=getimagesize($query_string);//¬O§_¬°¹Ï¤ù
+$array=getimagesize($query_string);//æ˜¯å¦ç‚ºåœ–ç‰‡
 //print_r($array);exit;
 /*
     [0] => 1440
@@ -17,7 +17,7 @@ $array=getimagesize($query_string);//¬O§_¬°¹Ï¤ù
 */
 if(!$array){die('x2');}
 //
-$contents = file_get_contents($query_string);//¨ú±oÀÉ®×¤º®e
+$contents = file_get_contents($query_string);//å–å¾—æª”æ¡ˆå…§å®¹
 if(!$contents){die('x');}
 //
 /*
@@ -34,7 +34,7 @@ if(function_exists("mime_content_type")){
 }
 */
 //
-Header("Content-type:".$array['mime']);//«ü©w¤å¥óÃþ«¬
+Header("Content-type:".$array['mime']);//æŒ‡å®šæ–‡ä»¶é¡žåž‹
 echo $contents;
 exit;
 ?>

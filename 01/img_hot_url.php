@@ -7,9 +7,7 @@ $phpself=basename($_SERVER["SCRIPT_FILENAME"]);//
 $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 ////
-$FFF=$phpdir."XPButtonUploadText_61x22.png";
-$array=getimagesize($FFF);//取得圖片資訊 //非圖片傳回空白值
-if(!$array[2]){die('不支援');}
+
 /*
 if(function_exists("mime_content_type")){
 	$FFF=mime_content_type($query_string);

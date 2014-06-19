@@ -1,5 +1,7 @@
 <?php
+$phpself=basename($_SERVER["SCRIPT_FILENAME"]);//被執行的文件檔名
 error_reporting(E_ALL & ~E_NOTICE); //所有錯誤中排除NOTICE提示
+extract($_POST,EXTR_SKIP);extract($_GET,EXTR_SKIP);extract($_COOKIE,EXTR_SKIP);
 ////
 	// Work-around for setting up a session because Flash Player doesn't send the cookies
 	if (isset($_POST["PHPSESSID"])) {
@@ -10,7 +12,13 @@ error_reporting(E_ALL & ~E_NOTICE); //所有錯誤中排除NOTICE提示
 	// The Demos don't save files
 
 	if (!isset($_FILES["Filedata"]) || !is_uploaded_file($_FILES["Filedata"]["tmp_name"]) || $_FILES["Filedata"]["error"] != 0) {
-		echo "There was a problem with the upload";
+$form=<<<EOT
+<form action="$phpself" method="post" enctype="multipart/form-data">
+<input type="file" name="Filedata" multiple="multiple" >
+<input type="submit" name="send" value="上傳">
+</form>
+EOT;
+		echo $form;
 		exit(0);
 	}
 ////
@@ -97,6 +105,7 @@ $filename_new=$dir_mth."_".$date_now."_".$fn_a.".".$fn_b;
 $FFF=move_uploaded_file($_FILES["Filedata"]['tmp_name'], $filename_new);
 
 //結束
+echo "ok";
 exit(0);
 ////
 function strZHcut($str){ //將檔名中的中文去掉

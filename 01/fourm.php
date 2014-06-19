@@ -33,7 +33,7 @@ rsort($FFF_arr);//新的在上
 $ct=count($FFF_arr);//攔截到的項目
 ////**********
 //檢查是否支援 allow_url_fopen
-$allow_url_fopen = ini_get('allow_url_fopen');
+echo $allow_url_fopen = ini_get('allow_url_fopen');
 
 //$contents = file_get_contents($FFF);//取得檔案內容
 //$array=getimagesize($FFF);//取得圖片資訊 //非圖片傳回空白值
@@ -48,7 +48,6 @@ echo "<pre>";
 $cc=1;
 foreach($FFF_arr as $k => $v ){
 	if($cc>100){break;}
-	
 	switch($query_string){
 		case 'a': //論壇1
 			if($cc == 1){
@@ -77,8 +76,7 @@ foreach($FFF_arr as $k => $v ){
 	}
 	echo "\n";
 	$cc=$cc+1;
-
 }
 echo "</pre>";
-
+echo "<br/>\n";
 ?>
