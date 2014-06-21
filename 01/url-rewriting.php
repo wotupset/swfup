@@ -7,17 +7,9 @@ $FFF2=$_SERVER["PHP_SELF"];
 $rewrite=substr($FFF,strrpos($FFF2,"/")+1,strlen($FFF)); //根目錄
 //echo $rewrite;
 $patterns = array();
-$patterns[0] = "/^1\.htm$/";
-$patterns[1] = "/^(.+\.jpg)$/i";
-$patterns[2] = "/^(.+\.png)$/i";
-$patterns[3] = "/^(.+\.gif)$/i";
 $patterns[140509] = "/^index2\.php$/";
 //
 $replacements = array();
-$replacements[0] = "XPButtonUploadText_61x22.png";
-$replacements[1] = "./_".$ym."/$1";
-$replacements[2] = "./_".$ym."/$1";
-$replacements[3] = "./_".$ym."/$1";
 $replacements[140509] = "../02/index2.php";
 $rewrite_o=$rewrite;
 $rewrite = preg_replace($patterns, $replacements, $rewrite);//匹配后的地址
