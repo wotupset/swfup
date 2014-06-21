@@ -72,13 +72,17 @@ if($chk_safemode_){//有安全模式
 $fn=$_FILES["Filedata"]['name'];
 $fn_a=substr($fn,0,strrpos($fn,".")); //主檔名
 //修飾
+$fn_a=preg_replace("/[^\w]/","_",$fn_a);
+$fn_a=preg_replace("/_+/","_",$fn_a);
+/*
 $fn_a=strZHcut($fn_a);//主檔名
 $fn_a=preg_replace("/\]/","_",$fn_a);
 $fn_a=preg_replace("/\[/","_",$fn_a);
 $fn_a=preg_replace("/ /","_",$fn_a);
 $fn_a=preg_replace("/\./","_",$fn_a);
 $fn_a=preg_replace("/\./","_",$fn_a);
-$fn_a=preg_replace("/_+/","_",$fn_a);
+
+*/
 //
 $fn_b=strrpos($fn,".")+1-strlen($fn);
 $fn_b=substr($fn,$fn_b); //副檔名

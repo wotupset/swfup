@@ -3,10 +3,8 @@ date_default_timezone_set("Asia/Taipei");//時區設定 Etc/GMT+8
 $time=time();
 $ym=date("ym",$time);
 $FFF=$_SERVER["REQUEST_URI"];
-//echo $FFF;
-$url = pathinfo($FFF);
-//print_r($url);
-$rewrite = $url["basename"];//原始地址
+$FFF2=$_SERVER["PHP_SELF"];
+$rewrite=substr($FFF,strrpos($FFF2,"/")+1,strlen($FFF)); //根目錄
 //echo $rewrite;
 $patterns = array();
 $patterns[0] = "/^1\.htm$/";
