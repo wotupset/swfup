@@ -1,10 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
 <title>SWFUpload Demos - Simple Demo</title>
-<link href="css/default.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="swfupload/swfupload.js"></script>
-<script type="text/javascript" src="js/swfupload.swfobject.js"></script>
+<link href="../css/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../swfupload/swfupload.js"></script>
 <script type="text/javascript" src="js/swfupload.queue.js"></script>
 <script type="text/javascript" src="js/fileprogress.js"></script>
 <script type="text/javascript" src="js/handlers.js"></script>
@@ -13,7 +12,7 @@
 
 		window.onload = function() {
 			var settings = {
-				flash_url : "swfupload/swfupload.swf",
+				flash_url : "../swfupload/swfupload.swf",
 				upload_url: "upload.php",
 				post_params: {"PHPSESSID" : "<?php echo session_id(); ?>"},
 				file_size_limit : "100 MB",
@@ -28,7 +27,7 @@
 				debug: false,
 
 				// Button settings
-				button_image_url: "TestImageNoText_65x29.png",
+				button_image_url: "images/TestImageNoText_65x29.png",
 				button_width: "65",
 				button_height: "29",
 				button_placeholder_id: "spanButtonPlaceHolder",

@@ -13,6 +13,7 @@ $ver_md5=md5($ver);
 $ver_color=substr($ver_md5,0,6);
 $ver_span="<span style='color:#".$ver_color.";'>".$ver_color."</span>";
 //**********
+$sf=0;if(is_file("sf=1.txt")){$sf=1;}
 //
 if(preg_match("/^([0-9]{4})!([0-9]+)$/",$query_string,$match)){
 	//$match[1]=ym
@@ -114,6 +115,7 @@ foreach($FFF_arr as $k => $v ){
 		$fn_b=substr($fn,$fn_b); //副檔名
 		$pic.= $cc;
 		if(strtolower($fn_b) == "gif"){$pic.="GIF";}
+		if($sf==1){$pic_src="img_hot.php?".$dir_mth.$v;}
 		$pic.= "<br/>\n";
 		$pic.= "<a href='".$pic_src."' target='_blank'><img src='".$pic_src."'/></a>";
 		$pic.= "<br/>\n";
