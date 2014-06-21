@@ -11,6 +11,7 @@ $phphost=$_SERVER["SERVER_NAME"];
 $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 //**********
+//不支援外連時的應對方法
 $sf=0;if(is_file("sf=1.txt")){$sf=1;}
 //
 
@@ -40,8 +41,9 @@ echo $allow_url_fopen = ini_get('allow_url_fopen');
 
 
 $ct2=ceil($ct/10);
-echo "<a href='./".$phpself."'>01</a>";
-echo "<a href='./".$phpself."?a'>02</a>";
+echo "<a href='./'>目</a>"."\n";
+echo "<a href='./".$phpself."'>返</a>"."\n";
+echo "<a href='./".$phpself."?a'>01</a>"."\n";
 echo "<pre>";
 $cc=0;
 foreach($FFF_arr as $k => $v ){
