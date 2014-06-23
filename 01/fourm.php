@@ -47,13 +47,14 @@ echo "<a href='./".$phpself."?a'>01</a>"."\n";
 echo "<pre>";
 $cc=0;
 foreach($FFF_arr as $k => $v ){
-	$pic_src=$dir_mth.$v;
-	if($sf==1){$pic_src="img_hot.php?".$dir_mth.$v;}
 	if($cc>100){break;}
+	$album_link=$phpdir."fourm2.php?".$ym."!".$ct2;//相簿位置
+	$pic_src=$dir_mth.$v;//相對位置
+	if($sf==1){$pic_src="img_hot.php?".$pic_src;}
 	switch($query_string){
 		case 'a': //html
 			if($cc == 0){
-				echo "&lt;a href='".$phpdir."fourm2.php?".$ym."!".$ct2."'&gt;".$phphost."&lt;/a&gt; &lt;br/&gt;";
+				echo "&lt;a href='".$album_link."'&gt;".$phphost."&lt;/a&gt; &lt;br/&gt;";
 				echo "\n";
 			}
 			//貼圖語法
@@ -62,7 +63,7 @@ foreach($FFF_arr as $k => $v ){
 		break;
 		default: //預設bbcode
 			if($cc == 0){
-				echo "[url=".$phpdir."fourm2.php?".$ym."!".$ct2."]".$phphost."[/url]";
+				echo "[url=".$album_link."]".$phphost."[/url]";
 				echo "\n";
 			}
 			//貼圖語法
