@@ -8,12 +8,13 @@ $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 $phpself=basename($_SERVER["SCRIPT_FILENAME"]);//被執行的文件檔名
 //**********
-$ver = "150601.0218";
+$ver = "150624.0255";
 $ver_md5=md5($ver);
 $ver_color=substr($ver_md5,0,6);
 $ver_span="<span style='color:#".$ver_color.";'>".$ver_color."</span>";
 //**********
-$sf=0;if(is_file("sf=1.txt")){$sf=1;}
+//不支援外連時的應對方法
+$hp=0;if(is_file("hp=1.txt")){$hp=1;}//hotlink_protect
 //
 if(preg_match("/^([0-9]{4})!([0-9]+)$/",$query_string,$match)){
 	//$match[1]=ym
@@ -70,19 +71,27 @@ $cc = 0;
 $FFF_arr=array();
 while(($file = readdir($handle))!==false) { 
 	$chk=0;
-	$ext = pathinfo($file,PATHINFO_EXTENSION);//副檔名
+	$ext=substr($file,strrpos($file,".")+1); //副檔名
+	//$ext = pathinfo($file,PATHINFO_EXTENSION);//副檔名
 	if($ext == "jpg"){$chk=1;}//只要圖
 	if($ext == "png"){$chk=1;}//只要圖
 	if($ext == "gif"){$chk=1;}//只要圖
 	//if(preg_match("/\.gif$/i",$file)){$chk=1;}//只要圖
-	if($chk==1){$FFF_arr[]=$file;}
+	if($chk==1){
+		$FFF_arr[0][$cc]=$file;
+		$FFF_arr[1][$cc]=filectime($dir_mth.$file);
+	}
 	$cc = $cc + 1;
 } 
 closedir($handle); 
-sort($FFF_arr);//排序 舊的在前
+//sort($FFF_arr);//排序 舊的在前
+array_multisort(
+$FFF_arr[1], SORT_ASC,SORT_NUMERIC,
+$FFF_arr[0]
+);
 //**********
 //列出左側分頁
-$arr_ct=count($FFF_arr);//計算數量
+$arr_ct=count($FFF_arr[0]);//計算數量
 $pg_max=ceil($arr_ct/10);
 //27/10=2.7 -> 取3頁
 //ceil 函数向上舍入为最接近的整数
@@ -103,7 +112,7 @@ for($i=0;$i<$pg_max;$i++){
 //**********
 //列出右側圖片
 $cc=1;$pic='';
-foreach($FFF_arr as $k => $v ){
+foreach($FFF_arr[0] as $k => $v ){
 	//if(){continue;}
 	if( ($k>= ($qs2-1)*10 ) && ($k< ($qs2)*10 ) ){//分頁輸出
 		//$pic_src=$phpdir.$dir_mth.$v;
@@ -115,7 +124,7 @@ foreach($FFF_arr as $k => $v ){
 		$fn_b=substr($fn,$fn_b); //副檔名
 		$pic.= $cc;
 		if(strtolower($fn_b) == "gif"){$pic.="GIF";}
-		if($sf==1){$pic_src="img_hot.php?".$dir_mth.$v;}
+		if($hp==1){$pic_src="img_hot.php?".$dir_mth.$v;}//相對位置
 		$pic.= "<br/>\n";
 		$pic.= "<a href='".$pic_src."' target='_blank'><img src='".$pic_src."'/></a>";
 		$pic.= "<br/>\n";
@@ -206,16 +215,7 @@ return $x;
 
 function htmlend(){
 $x=<<<EOT
-<!--BAIDU_YUNTU_START-->
-<script>
-(function(d, t) {
-    var r = d.createElement(t), s = d.getElementsByTagName(t)[0];
-    r.async = 1;
-    r.src = '//rp.baidu.com/rp3w/3w.js?sid=8603574381540631365&t=' + Math.ceil(new Date/3600000);
-    s.parentNode.insertBefore(r, s);
-})(document, 'script');
-</script>
-<!--BAIDU_YUNTU_END-->
+
 
 </body></html>
 EOT;

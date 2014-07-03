@@ -31,19 +31,19 @@ $date_now=date("d", $time)."v".date("His", $time);
 ////
 //檢查是否有安全模式
 $chk_safemode_= NULL;
-if(is_dir("../01/safemode=NO/") || is_dir("../01/safemode=YES/") ){//檢查是否有檢查過
-	if(is_dir("../01/safemode=NO/")){$chk_safemode_=0;}
-	if(is_dir("../01/safemode=YES/")){$chk_safemode_=1;}
+if(is_dir("./safemode=NO/") || is_dir("./safemode=YES/") ){//檢查是否有檢查過
+	if(is_dir("./safemode=NO/")){$chk_safemode_=0;}
+	if(is_dir("./safemode=YES/")){$chk_safemode_=1;}
 	//echo "跳過";
 }else{//沒檢查過
-	mkdir("../01/safemode=CHK/", 0777); //建立資料夾 權限0777
-	copy("./index.php", "../01/safemode=CHK/index.php");//複製index檔案到目錄
-	if(!is_dir("../01/safemode=CHK/")){die('建立資料夾失敗');}
-	if(is_file("../01/safemode=CHK/index.php")){//存在
-		rename("../01/safemode=CHK/", "../01/safemode=NO/"); //更名
+	mkdir("./safemode=CHK/", 0777); //建立資料夾 權限0777
+	copy("./index.php", "./safemode=CHK/index.php");//複製index檔案到目錄
+	if(!is_dir("./safemode=CHK/")){die('建立資料夾失敗');}
+	if(is_file("./safemode=CHK/index.php")){//存在
+		rename("./safemode=CHK/", "./safemode=NO/"); //更名
 		$chk_safemode_=0;//沒有安全模式
 	}else{//還是不存在
-		rename("../01/safemode=CHK/", "../01/safemode=YES/"); //更名
+		rename("./safemode=CHK/", "./safemode=YES/"); //更名
 		$chk_safemode_=1;//有安全模式
 	}
 }

@@ -12,7 +12,7 @@ $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 //**********
 //不支援外連時的應對方法
-$sf=0;if(is_file("sf=1.txt")){$sf=1;}
+$hp=0;if(is_file("hp=1.txt")){$hp=1;}//hotlink_protect
 //
 
 if(!is_dir($dir_mth)){//找不到資料夾就找safemode
@@ -26,15 +26,25 @@ $cc = 0;
 $FFF_arr=array();
 while(($file = readdir($handle))!==false) { 
 	$chk=0;
-	if(preg_match("/\.jpg$/i",$file)){$chk=1;}
-	if(preg_match("/\.png$/i",$file)){$chk=1;}
-	if(preg_match("/\.gif$/i",$file)){$chk=1;}
-	if($chk==1){$FFF_arr[]=$file;}
+	$ext=substr($file,strrpos($file,".")+1); //副檔名
+	//$ext = pathinfo($file,PATHINFO_EXTENSION);//副檔名
+	if($ext == "jpg"){$chk=1;}//只要圖
+	if($ext == "png"){$chk=1;}//只要圖
+	if($ext == "gif"){$chk=1;}//只要圖
+	//if(preg_match("/\.gif$/i",$file)){$chk=1;}//只要圖
+	if($chk==1){
+		$FFF_arr[0][$cc]=$file;
+		$FFF_arr[1][$cc]=filectime($dir_mth.$file);
+	}
 	$cc = $cc + 1;
 } 
 closedir($handle); 
-rsort($FFF_arr);//新的在上
-$ct=count($FFF_arr);//攔截到的項目
+//sort($FFF_arr);//排序 舊的在前
+array_multisort(
+$FFF_arr[1], SORT_DESC,SORT_NUMERIC,
+$FFF_arr[0]
+);
+$ct=count($FFF_arr[0]);//攔截到的項目
 ////**********
 //檢查是否支援 allow_url_fopen
 echo $allow_url_fopen = ini_get('allow_url_fopen');
@@ -46,11 +56,11 @@ echo "<a href='./".$phpself."'>返</a>"."\n";
 echo "<a href='./".$phpself."?a'>01</a>"."\n";
 echo "<pre>";
 $cc=0;
-foreach($FFF_arr as $k => $v ){
+foreach($FFF_arr[0] as $k => $v ){
 	if($cc>100){break;}
 	$album_link=$phpdir."fourm2.php?".$ym."!".$ct2;//相簿位置(絕對位置)
 	$pic_src=$phpdir.$dir_mth.$v;//圖片位置(絕對位置)
-	if($sf==1){$pic_src="img_hot.php?".$dir_mth.$v;}//反防盜連(相對位置)
+	if($hp==1){$pic_src=$phpdir."img_hot.php?".$dir_mth.$v;}//反防盜連(絕對+相對位置)
 	switch($query_string){
 		case 'a': //html
 			if($cc == 0){
@@ -59,7 +69,7 @@ foreach($FFF_arr as $k => $v ){
 			}
 			//貼圖語法
 			echo $cc;
-			echo "&lt;img src='".$phpdir.$pic_src."'&gt; &lt;br/&gt;";
+			echo "&lt;img src='".$pic_src."'&gt; &lt;br/&gt;";
 		break;
 		default: //預設bbcode
 			if($cc == 0){
@@ -68,7 +78,7 @@ foreach($FFF_arr as $k => $v ){
 			}
 			//貼圖語法
 			echo $cc;
-			echo "[img]".$phpdir.$pic_src."[/img]";
+			echo "[img]".$pic_src."[/img]";
 		break;
 	}
 	echo "\n";
