@@ -40,7 +40,7 @@ $cc = 0;
 $FFF_arr2=array();
 while(($file = readdir($handle))!==false) { 
 	$chk=0;
-	if( is_dir($file) && preg_match("/^_([0-9]{4})$/",$file,$match) ){$chk=2;}
+	if( is_dir($file) && preg_match("/^(_[0-9]{4})$/",$file,$match) ){$chk=2;}
 	if($chk==2){$FFF_arr2[]=$match[1];}//列出存圖的資料夾
 	$cc = $cc + 1;
 } 
@@ -52,19 +52,20 @@ sort($FFF_arr2);//排序 舊的在前
 
 
 ////**********
-//建立存圖的資料夾
+//
 $dir_mth="./_".$ym."/"; //存放該月檔案
 if(!is_dir($dir_mth)){//當月資料夾不存在
-	if($FFF_arr2[0]){//若有其他資料夾 就連結過去
-		$ym=$FFF_arr2[0];
-		$dir_mth="./_".$ym."/"; //存放該月檔案
+	if(count($FFF_arr2)){//若有其他資料夾 就連結過去
+		$ym=end($FFF_arr2);
+		$dir_mth="./".$ym."/"; //存放該月檔案
 		//echo $dir_mth;
 	}else{
 		die('[x]尚未建立任何資料夾');
 	}
 }
-$dir_mth_index=$dir_mth."index.php"; //存放該月檔案
-if(!is_file($dir_mth_index)){die('[x]index');}
+$dir_mth_index=$dir_mth."index.php"; //目錄//可讀?
+if(!is_file($dir_mth_index)){die('[x]index'.$dir_mth);}
+//
 $url=$dir_mth;
 $handle=opendir($url); 
 $cc = 0;

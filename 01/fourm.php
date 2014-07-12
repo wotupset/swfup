@@ -14,12 +14,9 @@ $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 //不支援外連時的應對方法
 $hp=0;if(is_file("hp=1.txt")){$hp=1;}//hotlink_protect
 //
-
-if(!is_dir($dir_mth)){//找不到資料夾就找safemode
-	$dir_mth="./safemode/";
-	if(!is_dir($dir_mth)){die('[x]dir');}
-}
-if(!is_writeable(realpath($dir_mth))){die("目錄沒有寫入權限"); }
+//找不到資料夾
+if(!is_dir($dir_mth)){die("找不到資料夾");}
+//if(!is_writeable(realpath($dir_mth))){}
 $url=$dir_mth;
 $handle=opendir($url); 
 $cc = 0;
