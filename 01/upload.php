@@ -1,7 +1,5 @@
 <?php
-$phpself=basename($_SERVER["SCRIPT_FILENAME"]);//被執行的文件檔名
 error_reporting(E_ALL & ~E_NOTICE); //所有錯誤中排除NOTICE提示
-extract($_POST,EXTR_SKIP);extract($_GET,EXTR_SKIP);extract($_COOKIE,EXTR_SKIP);
 ////
 	// Work-around for setting up a session because Flash Player doesn't send the cookies
 	if (isset($_POST["PHPSESSID"])) {
@@ -12,13 +10,7 @@ extract($_POST,EXTR_SKIP);extract($_GET,EXTR_SKIP);extract($_COOKIE,EXTR_SKIP);
 	// The Demos don't save files
 
 	if (!isset($_FILES["Filedata"]) || !is_uploaded_file($_FILES["Filedata"]["tmp_name"]) || $_FILES["Filedata"]["error"] != 0) {
-$form=<<<EOT
-<form action="$phpself" method="post" enctype="multipart/form-data">
-<input type="file" name="Filedata" multiple="multiple" >
-<input type="submit" name="send" value="上傳">
-</form>
-EOT;
-		echo $form;
+		echo "There was a problem with the upload";
 		exit(0);
 	}
 ////
@@ -26,8 +18,6 @@ EOT;
 date_default_timezone_set("Asia/Taipei");//時區設定 Etc/GMT+8
 $time=time();
 $ym=date("ym",$time);
-$date_now=date("d", $time)."v".date("His", $time);
-
 ////
 //檢查是否有安全模式
 $chk_safemode_= NULL;
@@ -37,8 +27,10 @@ if(is_dir("./safemode=NO/") || is_dir("./safemode=YES/") ){//檢查是否有檢�
 	//echo "跳過";
 }else{//沒檢查過
 	mkdir("./safemode=CHK/", 0777); //建立資料夾 權限0777
+	if(!is_dir("./safemode=CHK/")){//存在
+		die('建立資料夾失敗');
+	}
 	copy("./index.php", "./safemode=CHK/index.php");//複製index檔案到目錄
-	if(!is_dir("./safemode=CHK/")){die('建立資料夾失敗');}
 	if(is_file("./safemode=CHK/index.php")){//存在
 		rename("./safemode=CHK/", "./safemode=NO/"); //更名
 		$chk_safemode_=0;//沒有安全模式
@@ -48,41 +40,17 @@ if(is_dir("./safemode=NO/") || is_dir("./safemode=YES/") ){//檢查是否有檢�
 	}
 }
 ////
-if($chk_safemode_){//有安全模式
-	$dir_mth="../01/safemode/";//
-	chmod($dir_mth, 0777); //權限0777
-}else{//無安全模式
-	$dir_mth="../01/_".$ym."/"; //
-	if(!is_dir($dir_mth)){//若資料夾不存在 則建立
-		mkdir($dir_mth, 0777); //建立資料夾 權限0777
-		chmod($dir_mth, 0777); //權限0777
-	}
-	$FFF="index.php";
-	if(!is_file($dir_mth.$FFF) && is_file($FFF) ){
-		copy($FFF, $dir_mth.$FFF);//複製檔案到目錄
-	}
-	$FFF="_fourm_self.php";
-	if(!is_file($dir_mth.$FFF) && is_file($FFF) ){
-		//copy($FFF, $dir_mth.$FFF);//複製檔案到目錄
-	}
-}
-////
-
 //抓出上傳檔案的副檔名
 $fn=$_FILES["Filedata"]['name'];
 $fn_a=substr($fn,0,strrpos($fn,".")); //主檔名
 //修飾
-$fn_a=preg_replace("/[^\w]/","_",$fn_a);
-$fn_a=preg_replace("/_+/","_",$fn_a);
-/*
 $fn_a=strZHcut($fn_a);//主檔名
 $fn_a=preg_replace("/\]/","_",$fn_a);
 $fn_a=preg_replace("/\[/","_",$fn_a);
 $fn_a=preg_replace("/ /","_",$fn_a);
 $fn_a=preg_replace("/\./","_",$fn_a);
 $fn_a=preg_replace("/\./","_",$fn_a);
-
-*/
+$fn_a=preg_replace("/_+/","_",$fn_a);
 //
 $fn_b=strrpos($fn,".")+1-strlen($fn);
 $fn_b=substr($fn,$fn_b); //副檔名
@@ -105,11 +73,32 @@ exit;
 }
 ////
 //存放檔案
-$filename_new=$dir_mth."_".$date_now."_".$fn_a.".".$fn_b;
-$FFF=move_uploaded_file($_FILES["Filedata"]['tmp_name'], $filename_new);
+$date_now=date("d", $time)."v".date("His", $time);
+if($chk_safemode_){//有安全模式
+	$dir_mth="./safemode/";//
+	chmod($dir_mth, 0777); //權限0777
+	$filename_new=$dir_mth."_".$date_now."_".$fn_a.".".$fn_b;
+	$FFF=move_uploaded_file($_FILES["Filedata"]['tmp_name'], $filename_new);
+}else{//無安全模式
+	$dir_mth="./_".$ym."/"; //
+	if(!is_dir($dir_mth)){//若資料夾不存在 則建立
+		mkdir($dir_mth, 0777); //建立資料夾 權限0777
+		chmod($dir_mth, 0777); //權限0777
+	}
+	$FFF="index.php";
+	if(!is_file($dir_mth.$FFF) && is_file($FFF) ){
+		copy($FFF, $dir_mth.$FFF);//複製檔案到目錄
+	}
+	$FFF="_fourm_self.php";
+	if(!is_file($dir_mth.$FFF) && is_file($FFF) ){
+		//copy($FFF, $dir_mth.$FFF);//複製檔案到目錄
+	}
+	$filename_new=$dir_mth."_".$date_now."_".$fn_a.".".$fn_b;
+	$FFF=move_uploaded_file($_FILES["Filedata"]['tmp_name'], $filename_new);
+}
 
+////
 //結束
-echo "ok";
 exit(0);
 ////
 function strZHcut($str){ //將檔名中的中文去掉

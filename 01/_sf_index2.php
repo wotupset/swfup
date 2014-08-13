@@ -15,7 +15,7 @@ var swfu;
 SWFUpload.onload = function () {
 	var settings = {
 		flash_url : "swfupload/swfupload.swf",
-		upload_url: "upload.php",
+		upload_url: "_sf_upload.php",
 		post_params: {
 			"PHPSESSID" : "NONE",
 			"HELLO-WORLD" : "Here I Am",
@@ -110,7 +110,8 @@ SWFUpload.onload = function () {
 </div>
 <?php
 if(!is_writeable(realpath("./"))){echo "根目錄無法寫入";}
-if(!is_writeable("safemode")){echo "safemode目錄無法寫入";}
+@chmod("./safemode", 0777); //權限0777
+if(!is_writeable("./safemode")){echo "safemode目錄無法寫入";}
 echo $echo=ini_get('upload_max_filesize');
 //echo $phppath=dirname($_SERVER["SCRIPT_FILENAME"]);//絕對路徑
 ?>

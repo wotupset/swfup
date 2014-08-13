@@ -14,56 +14,50 @@ $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 //不支援外連時的應對方法
 $hp=0;if(is_file("hp=1.txt")){$hp=1;}//hotlink_protect
 //
+$dir_mth="./safemode/";
+//
+if(!is_dir($dir_mth)){die('[x]dir');}
 if(!is_writeable(realpath($dir_mth))){die("目錄沒有寫入權限"); }
+//
+$handle=opendir($dir_mth);
+$cc = 0;
 $FFF_arr=array();
-if(is_dir($dir_mth)){
-	$cc = 0;
-	$url=$dir_mth;
-	$handle=opendir($url); 
-	while(($file = readdir($handle))!==false) { 
-		$chk=0;
-		$ext=substr($file,strrpos($file,".")+1); //副檔名
-		$ext=strtolower($ext);
-		//$ext = pathinfo($file,PATHINFO_EXTENSION);//副檔名
-		if(preg_match("/jpg/i",$ext)){$chk=1;}//只要圖
-		if(preg_match("/png/i",$ext)){$chk=1;}//只要圖
-		if(preg_match("/gif/i",$ext)){$chk=1;}//只要圖
-		if($chk==1){
-			$FFF_arr[0][$cc]=$file;
-			$FFF_arr[1][$cc]=filectime($dir_mth.$file);
-		}
-		$cc = $cc + 1;
-	} 
-}else{
-	$FFF_arr[0][0]='x';
-	$FFF_arr[1][0]='x';
-}
-
+while(($file = readdir($handle))!==false) { 
+	$chk=0;
+	$ext=substr($file,strrpos($file,".")+1); //副檔名
+	//$ext = pathinfo($file,PATHINFO_EXTENSION);//副檔名
+	if($ext == "jpg"){$chk=1;}//只要圖
+	if($ext == "png"){$chk=1;}//只要圖
+	if($ext == "gif"){$chk=1;}//只要圖
+	if($chk==1){
+		$FFF_arr[0][$cc]=$file;
+		$FFF_arr[1][$cc]=filectime($dir_mth.$file);
+	}
+	$cc = $cc + 1;
+} 
 closedir($handle); 
 //sort($FFF_arr);//排序 舊的在前
 array_multisort(
-$FFF_arr[1], SORT_DESC,SORT_NUMERIC,
+$FFF_arr[1], SORT_ASC,SORT_NUMERIC,
 $FFF_arr[0]
 );
-//
-ob_start();
-$ct=count($FFF_arr[0]);//攔截到的項目
+//print_r($FFF_arr);exit;
 ////**********
 //檢查是否支援 allow_url_fopen
 echo $allow_url_fopen = ini_get('allow_url_fopen');
 
-
-$ct2=ceil($ct/10);
+$arr_ct=count($FFF_arr[0]);//計算數量
+$ct2=ceil($arr_ct/10);
 echo "<a href='./'>目</a>"."\n";
 echo "<a href='./".$phpself."'>返</a>"."\n";
 echo "<a href='./".$phpself."?a'>01</a>"."\n";
 echo "<pre>";
 $cc=0;
 foreach($FFF_arr[0] as $k => $v ){
-	if($cc>200){break;}
+	if($cc>100){break;}
 	$album_link=$phpdir."fourm2.php?".$ym."!".$ct2;//相簿位置(絕對位置)
 	$pic_src=$phpdir.$dir_mth.$v;//圖片位置(絕對位置)
-	if($hp==1){$pic_src=$phpdir."img_hot.php?".$dir_mth.$v;}//反防盜連(絕對+相對位置)
+	if($sf==1){$pic_src="img_hot.php?".$dir_mth.$v;}//反防盜連(相對位置)
 	switch($query_string){
 		case 'a': //html
 			if($cc == 0){
@@ -85,45 +79,8 @@ foreach($FFF_arr[0] as $k => $v ){
 		break;
 	}
 	echo "\n";
-	$cc++;
+	$cc=$cc+1;
 }
 echo "</pre>";
-echo "<br/>`\n";
-echo "<br/>`\n";
-$htmlbody=ob_get_clean();
-
-
-
-
-
-echo htmlhead();
-echo $htmlbody;
-echo htmlend();
-
-function htmlhead(){
-$x=<<<EOT
-<html><head>
-<title>guten morgen</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META http-equiv="Content-Script-Type" content="text/javascript">
-<META http-equiv="Content-Style-Type" content="text/css">
-<META HTTP-EQUIV="EXPIRES" CONTENT="Thu, 15 Jan 2009 05:12:01 GMT">
-<META NAME="ROBOTS" CONTENT="INDEX,FOLLOW">
-<STYLE TYPE="text/css">
-</STYLE>
-</head>
-<body>
-EOT;
-$x="\n".$x."\n";
-return $x;
-}
-
-function htmlend(){
-$x=<<<EOT
-</body></html>
-EOT;
-$x="\n".$x."\n";
-return $x;
-}
-
+echo "<br/>\n";
 ?>

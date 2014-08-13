@@ -8,12 +8,11 @@ $phpdir="http://".$_SERVER["SERVER_NAME"]."".$_SERVER["PHP_SELF"]."";
 $phpdir=substr($phpdir,0,strrpos($phpdir,"/")+1); //根目錄
 $phpself=basename($_SERVER["SCRIPT_FILENAME"]);//被執行的文件檔名
 //**********
-$ver = "150624.0255";
+$ver = "150624.0218";
 $ver_md5=md5($ver);
 $ver_color=substr($ver_md5,0,6);
 $ver_span="<span style='color:#".$ver_color.";'>".$ver_color."</span>";
 //**********
-//不支援外連時的應對方法
 $hp=0;if(is_file("hp=1.txt")){$hp=1;}//hotlink_protect
 //
 if(preg_match("/^([0-9]{4})!([0-9]+)$/",$query_string,$match)){
@@ -33,40 +32,9 @@ if(preg_match("/^([0-9]{4})!([0-9]+)$/",$query_string,$match)){
 $ym=$qs1;//有指定的話 更換資料夾
 unset($match);
 ////**********
-//遍歷資料夾 //尋找存圖的資料夾
-$url="./";
-$handle=opendir($url); 
-$cc = 0;
-$FFF_arr2=array();
-while(($file = readdir($handle))!==false) { 
-	$chk=0;
-	if( is_dir($file) && preg_match("/^_([0-9]{4})$/",$file,$match) ){$chk=2;}
-	if($chk==2){$FFF_arr2[]=$match[1];}//列出存圖的資料夾
-	$cc = $cc + 1;
-} 
-closedir($handle); 
-sort($FFF_arr2);//排序 舊的在前
-//**********
-
-//print_r($FFF_arr2);
-
-
-////**********
-//建立存圖的資料夾
-$dir_mth="./_".$ym."/"; //存放該月檔案
-if(!is_dir($dir_mth)){//當月資料夾不存在
-	if($FFF_arr2[0]){//若有其他資料夾 就連結過去
-		$ym=$FFF_arr2[0];
-		$dir_mth="./_".$ym."/"; //存放該月檔案
-		//echo $dir_mth;
-	}else{
-		die('[x]尚未建立任何資料夾');
-	}
-}
-$dir_mth_index=$dir_mth."index.php"; //存放該月檔案
-if(!is_file($dir_mth_index)){die('[x]index');}
-$url=$dir_mth;
-$handle=opendir($url); 
+//遍歷資料夾
+$dir_mth="./safemode/";
+$handle=opendir($dir_mth);
 $cc = 0;
 $FFF_arr=array();
 while(($file = readdir($handle))!==false) { 
@@ -76,7 +44,6 @@ while(($file = readdir($handle))!==false) {
 	if($ext == "jpg"){$chk=1;}//只要圖
 	if($ext == "png"){$chk=1;}//只要圖
 	if($ext == "gif"){$chk=1;}//只要圖
-	//if(preg_match("/\.gif$/i",$file)){$chk=1;}//只要圖
 	if($chk==1){
 		$FFF_arr[0][$cc]=$file;
 		$FFF_arr[1][$cc]=filectime($dir_mth.$file);
@@ -89,6 +56,7 @@ array_multisort(
 $FFF_arr[1], SORT_ASC,SORT_NUMERIC,
 $FFF_arr[0]
 );
+//print_r($FFF_arr);exit;
 //**********
 //列出左側分頁
 $arr_ct=count($FFF_arr[0]);//計算數量
@@ -101,7 +69,7 @@ if($qs2>$pg_max){$qs2=$pg_max;}
 if($qs2 == 0){$qs2=$pg_max;}
 if($qs2 == ''){$qs2=$pg_max;}
 //if(preg_match("/^new$/",$query_string,$match)){$qs2=$pg_max;}
-
+//當前分頁標示
 $cc=1;$pg_html='';$FFF='';
 for($i=0;$i<$pg_max;$i++){
 	if($cc == $qs2){$FFF="&nbsp;<span id='menu2_pi'>&#9619;&#9618;&#9617;</span>";}else{$FFF='';}
@@ -124,7 +92,7 @@ foreach($FFF_arr[0] as $k => $v ){
 		$fn_b=substr($fn,$fn_b); //副檔名
 		$pic.= $cc;
 		if(strtolower($fn_b) == "gif"){$pic.="GIF";}
-		if($hp==1){$pic_src="img_hot.php?".$dir_mth.$v;}//相對位置
+		if($sf==1){$pic_src="img_hot.php?".$dir_mth.$v;}
 		$pic.= "<br/>\n";
 		$pic.= "<a href='".$pic_src."' target='_blank'><img src='".$pic_src."'/></a>";
 		$pic.= "<br/>\n";
@@ -132,15 +100,7 @@ foreach($FFF_arr[0] as $k => $v ){
 	$cc=$cc+1;
 }
 //**********
-//列出底部關聯資料夾
-$list_dir_html='';
-foreach($FFF_arr2 as $k => $v ){
-	$list_dir_html.="<a href='".$phpself."?".$v."'>".$v."</a>";
-	$list_dir_html.="\n";
-}
-$list_dir_html="<a href='./'>返回</a>".' '.'月'.$ym.'頁'.$qs2.' '.$ver_span."<br/>\n".$list_dir_html;
-//**********
-//html主體
+//$htmlbody主體
 $htmlbody=<<<EOT
 <div id="menu2" style="z-index:9;position: fixed; margin: 0px; padding: 0px; left: 0px; top: 0px; color: #cc0000; background-color: #ffffff; border-right: 1px black solid; overflow: auto; width: 125px;height:90%;">
 	<div style="padding: 10px;">
@@ -149,13 +109,14 @@ $htmlbody=<<<EOT
 </div>
 <div id="menu3" style="z-index:8;position: fixed; margin-bottom: 0px; padding: 5px; width: 100%; left: 0px; bottom: 0px; color: #cc0000; background-color: #ffffee; border-top: 1px black solid; ">
 	<div style="font-size: 12px;margin-bottom:5px;">
-		$list_dir_html
+		<a href='./index.php'>資料夾模式</a> 頁$page $ver_span<br/>
 	</div>
 </div>
-<div id="right_content" style="margin-bottom:60px; margin-left:160px;">
+<div id="right_content" style="margin: auto auto 50px 160px;">
 	$pic
 </div>
 EOT;
+
 
 echo htmlhead();
 echo $htmlbody;
