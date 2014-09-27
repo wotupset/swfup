@@ -108,9 +108,15 @@ SWFUpload.onload = function () {
 		</div>
 	</form>
 </div>
+<img src="./png.php?1"/>
+<img src="./index.gif"/>
 <?php
-if(!is_writeable(realpath("./"))){echo "根目錄無法寫入";}
-if(!is_writeable("safemode")){echo "safemode目錄無法寫入";}
+if(!is_writeable("./")){echo "根目錄無法寫入";}
+date_default_timezone_set("Asia/Taipei");//時區設定 Etc/GMT+8
+$time=time();
+$ym=date("ym",$time);
+$dir_mth="./_".$ym."/"; //
+if(!is_writeable($dir_mth)){echo "子目錄無法寫入";}
 echo $echo=ini_get('upload_max_filesize');
 //echo $phppath=dirname($_SERVER["SCRIPT_FILENAME"]);//絕對路徑
 ?>

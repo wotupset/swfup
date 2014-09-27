@@ -45,11 +45,7 @@ $fn=$_FILES["Filedata"]['name'];
 $fn_a=substr($fn,0,strrpos($fn,".")); //主檔名
 //修飾
 $fn_a=strZHcut($fn_a);//主檔名
-$fn_a=preg_replace("/\]/","_",$fn_a);
-$fn_a=preg_replace("/\[/","_",$fn_a);
-$fn_a=preg_replace("/ /","_",$fn_a);
-$fn_a=preg_replace("/\./","_",$fn_a);
-$fn_a=preg_replace("/\./","_",$fn_a);
+$fn_a=preg_replace("/[^\w]/","_",$fn_a);
 $fn_a=preg_replace("/_+/","_",$fn_a);
 //
 $fn_b=strrpos($fn,".")+1-strlen($fn);
@@ -68,17 +64,17 @@ if($_FILES["Filedata"]['size'] > 10*1024*1024){$ban=1;}
 //回傳自訂的錯誤訊息
 if($ban){
 //header("Status: 405");
-header("HTTP/1.0 405 Not Found");
-exit;
+	error2exit();
 }
 ////
 //存放檔案
 $date_now=date("d", $time)."v".date("His", $time);
 if($chk_safemode_){//有安全模式
-	$dir_mth="./safemode/";//
-	chmod($dir_mth, 0777); //權限0777
-	$filename_new=$dir_mth."_".$date_now."_".$fn_a.".".$fn_b;
-	$FFF=move_uploaded_file($_FILES["Filedata"]['tmp_name'], $filename_new);
+	error2exit();
+	//$dir_mth="./safemode/";//
+	//chmod($dir_mth, 0777); //權限0777
+	//$filename_new=$dir_mth."_".$date_now."_".$fn_a.".".$fn_b;
+	//$FFF=move_uploaded_file($_FILES["Filedata"]['tmp_name'], $filename_new);
 }else{//無安全模式
 	$dir_mth="./_".$ym."/"; //
 	if(!is_dir($dir_mth)){//若資料夾不存在 則建立
@@ -121,5 +117,11 @@ function strZHcut($str){ //將檔名中的中文去掉
 	return $str;
 }
 ////
+function error2exit(){
+	header("HTTP/1.0 405 Not Found");
+	exit;
+	//
+	//$x='';return $x;
+}
 ////
 ?>
