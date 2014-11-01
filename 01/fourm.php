@@ -87,9 +87,9 @@ foreach($FFF_arr[0] as $k => $v ){
 	echo "\n";
 	$cc++;
 }
+echo "\n`\n";
 echo "</pre>";
-echo "<br/>`\n";
-echo "<br/>`\n";
+//echo "<br/>\n`\n";
 $htmlbody=ob_get_clean();
 
 

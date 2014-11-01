@@ -22,6 +22,7 @@ if(is_dir($url)){ //資料夾存在
 	$cc = 0;
 	$img_count=array('jpg'=>0,'png'=>0,'gif'=>0);
 	$total_size=0;
+	$total_imgc=0;
 	$handle=opendir($url); 
 	while(($file = readdir($handle))!==false) { 
 		if($file=='.'||$file == '..'){continue;}
@@ -37,7 +38,10 @@ if(is_dir($url)){ //資料夾存在
 		if($ext == "png"){$img_count['png']++;$img=1;}//只要圖
 		if($ext == "gif"){$img_count['gif']++;$img=1;}//只要圖
 		$FFF=filesize($ufile);
-		if($img==1){$total_size=$total_size+$FFF;}//累計圖檔大小
+		if($img==1){
+			$total_size=$total_size+$FFF; //計算大小
+			$total_imgc=$total_imgc+1; //計算數量
+		}//累計圖檔大小
 		//
 		$cc = $cc + 1;//
 	} 
@@ -94,7 +98,7 @@ if($chk ==0){init($log);}
 
 //
 $FFF='';
-$FFF=$total_size."\t".date("y",$time)."\t".date("m",$time)."\t".date("d",$time)."\t".date("His",$time);
+$FFF=$total_size."\t".date("y",$time)."\t".date("m",$time)."\t".date("d",$time)."\t".date("His",$time)."\t".$total_imgc;
 $array[]=explode("\t",$FFF);//新資料
 //
 $all_size='';
@@ -175,6 +179,7 @@ function init($log){
 		$url="./_".$v."/";
 		if( !is_dir($url) ){continue;} //若沒有存圖就跳過
 		$total_size=0; //歸零
+		$total_imgc=0;
 		$handle=opendir($url); 
 		while(($file = readdir($handle))!==false) { 
 			if($file=='.'||$file == '..'){continue;}
@@ -187,7 +192,10 @@ function init($log){
 			if($ext == "png"){$img_count['png']++;$img=1;}//只要圖
 			if($ext == "gif"){$img_count['gif']++;$img=1;}//只要圖
 			$FFF=filesize($ufile);
-			if($img==1){$total_size=$total_size+$FFF;}//累計圖檔大小
+			if($img==1){
+				$total_size=$total_size+$FFF;//累計圖檔大小
+				$total_imgc=$total_imgc+1;
+			}
 			//
 		}
 		$total_size=$total_size/1024; //byte -> kb
@@ -201,7 +209,7 @@ function init($log){
 		$mm=substr($v,2,2);
 		//echo $yy.'+'.$mm."\n";
 		//
-		$FFF=$total_size."\t".$yy."\t".$mm."\t".'00'."\t".'123456';
+		$FFF=$total_size."\t".$yy."\t".$mm."\t".'00'."\t".'123456'."\t".$total_imgc;
 		//echo $FFF."\n";
 		$content=$FFF."\n".$content;
 		//

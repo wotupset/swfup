@@ -62,24 +62,18 @@ SWFUpload.onload = function () {
 </script>
 </head>
 <body>
-<div id="header">
-	<h1 id="logo"><a href="./">SWFUpload</a></h1>
-	<div id="version">v2.2.0</div>
-</div>
+<a href="./">目</a>
+<a href='./index2.php'>返</a>
+<a href='./fourm.php'>貼</a>
+<a href='./fourm2.php'>閱</a>
+SWFUpload
+v2.2.0
 
 <div id="content">
 
 	<h2>SWFObject Demo</h2>
 	<form id="form1" action="index2.php" method="post" enctype="multipart/form-data">
-		<p> This page demonstrates the SWFObject plugin.  Do each of the following (one at a time) to see the plugin work: </p>
-			<ul>
-				<li>Uninstall your Flash Player or install a version less than 9.0.28</li>
-				<li>Cause the SWF file to fail to load by deleting or renaming swfupload.swf (simulating a very slow or failed download)</li>
-				<li>Disable JavaScript</li>
-			</ul>
-		<p>
-			Each of these tests demontrate how these issues can be handled by SWFUpload and the SWFObject libraries.
-		</p>
+
 		<div id="divSWFUploadUI">
 			<div class="fieldset  flash" id="fsUploadProgress">
 			<span class="legend">Upload Queue</span>
